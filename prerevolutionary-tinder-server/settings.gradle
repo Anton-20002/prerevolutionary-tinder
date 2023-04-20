@@ -1,3 +1,0 @@
-rootProject.name = 'prerevolutionary-tinder-server'
-include ':prerevolutionary-tinder-server'
-include ':prerevolutionary-tinder-tgbot-client'
