@@ -1,0 +1,11 @@
+version: "1.0"
+services:
+  postgres:
+    image: postgres:13.3
+    container_name: "prerevolutionary-tinder-db"
+    environment:
+      POSTGRES_DB: "prerevolutionary-tinder-db"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "qwerty$4"
+    ports:
+      - "5432:5432"
