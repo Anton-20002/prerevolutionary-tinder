@@ -33,6 +33,9 @@ dependencies {
 	implementation 'com.opencsv:opencsv:5.7.1'
 	implementation 'org.telegram:telegrambots:6.1.0'
 	implementation 'org.jfree:jfreechart:1.5.4'
+
+	implementation project(':prerevolutionary-tinder-server')
+	implementation project(':prerevolutionary-tinder-tgbot-client')
 }
 
 tasks.named('test') {
