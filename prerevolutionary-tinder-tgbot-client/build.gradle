@@ -7,7 +7,10 @@ dependencies {
     implementation 'org.hibernate:hibernate-core:6.1.7.Final'
 
     implementation 'com.netflix.feign:feign-jackson'
-//    implementation 'org.springframework.cloud:spring-cloud-netflix-core'
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign', version: '1.4.7.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-netflix-core'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.1'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:4.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-parent:3.0.5'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config:4.0.1'
 
 }

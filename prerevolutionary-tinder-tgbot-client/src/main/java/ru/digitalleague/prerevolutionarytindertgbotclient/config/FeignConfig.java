@@ -3,7 +3,7 @@ package ru.digitalleague.prerevolutionarytindertgbotclient.config;
 
 import feign.Feign;
 import feign.Logger;
-import org.springframework.cloud.netflix.feign.support.SpringMvcContract;
+import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
