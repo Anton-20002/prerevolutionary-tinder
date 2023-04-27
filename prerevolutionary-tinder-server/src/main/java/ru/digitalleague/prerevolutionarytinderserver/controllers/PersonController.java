@@ -11,8 +11,8 @@ import ru.digitalleague.prerevolutionarytinderdatabase.repositories.PersonReposi
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/person-attachment")
-public class ServerController {
+@RequestMapping(value = "/person-controller")
+public class PersonController {
 
     @Autowired
     PersonRepository personRepository;
