@@ -19,6 +19,6 @@ public class AppConfig {
 
     @Bean
     public FeignClientInterface feignClientInterface(@Autowired Feign.Builder feignBuilder) {
-        return feignBuilder.target(FeignClientInterface.class, env.getProperty("remote.wcs.url"));
+        return feignBuilder.target(FeignClientInterface.class, env.getProperty("feign.global.routes.url"));
     }
 }
