@@ -4,6 +4,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <include file="scripts/test_script.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/create_schema.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/create_person_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/create_blacklist_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/create_favoritelist_table.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

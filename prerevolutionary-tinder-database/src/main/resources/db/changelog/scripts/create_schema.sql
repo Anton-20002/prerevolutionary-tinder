@@ -1,0 +1,1 @@
+CREATE SCHEMA tinder AUTHORIZATION admin;
