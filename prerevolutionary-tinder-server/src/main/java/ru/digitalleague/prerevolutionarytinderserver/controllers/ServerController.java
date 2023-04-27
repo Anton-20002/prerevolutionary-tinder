@@ -13,7 +13,7 @@ public class ServerController {
     @Autowired
     PersonRepository personRepository;
 
-    private boolean isRegisteredPersonByChatId(long chatId) {
+    public boolean isRegisteredPersonByChatId(long chatId) {
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         return personOptional.isPresent();
     }
