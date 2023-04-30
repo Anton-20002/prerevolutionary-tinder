@@ -17,6 +17,19 @@ public class ParseCommandService {
     @Autowired
     private DbService dbService;
 
+    /**
+    
+    parseBotCommand
+    
+    BotCommandEnum botCommandEnum = BotCommandEnum.valueOf(command.toUpperCase());
+    try {
+    return botCommandEnum.getButtonByCommand();
+    } catch (NullPointerException npe){
+        // завершение работы, вывод в телегу инфы о некорректной комманде
+    }
+    
+    
+    */
     public SendMessage parseCommand(String textCommand, long chatId) {
         log.info("Parse command");
         SendMessage sendMessage = new SendMessage();
@@ -65,6 +78,10 @@ public class ParseCommandService {
         return sendMessage;
     }
 
+    /**
+    
+    Зачем в сервисе создавать метод getButtonByCommand с одним значением переключателя и вызывать здесь этот метод со значением ButtonCommandEnum.ABOUT
+    */                                
     public SendMessage parseAboutPerson(String textCommand, long chatId) {
         log.info("Parse about person command");
         dbService.saveAboutPersonInformation(textCommand, chatId);
