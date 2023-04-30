@@ -56,16 +56,42 @@ public class TelegramBot extends TelegramLongPollingBot {
         //TODO
         SendMessage sendMessage = new SendMessage();
         SendPhoto sendPhoto = null;
+        /**
+        
+        update.getMessage() == null прерывать выполнение кода, выводить информацию в телеге о необходимости заполнение текстом
+        
+        
+        
+        */
         if (update.getMessage() != null && update.getMessage().getText().contains("/")) {
             sendMessage = parseCommandService.parseCommand(update.getMessage().getText(), update.getMessage().getChatId());
             sendMessage.setChatId(update.getMessage().getChatId());
+            
+            /**
+            
+            update.getCallbackQuery().getMessage().getChatId() null pointer exception
+            
+            
+            */
         } else if (update.hasCallbackQuery()) {
             sendMessage = parseCommandService.parseButtonCommand(update.getCallbackQuery().getData(), update.getCallbackQuery().getMessage().getChatId());
             sendMessage.setChatId(update.getCallbackQuery().getMessage().getChatId());
+            
+            /**
+            
+            update.getMessage().getText().contains("\n") непонятная логика contains("\n")
+            
+            update.getMessage().getText().contains("\n") null pointer exception
+            
+            */
         } else if (update.getMessage() != null && !update.getMessage().getText().contains("\n")){
             sendMessage = parseCommandService.parsePersonName(update.getMessage().getText(), update.getMessage().getChatId());
             sendMessage.setChatId(update.getMessage().getChatId());
-//
+               /**
+               
+               много if else лучше в отдельный метод
+               
+               */
         } else if (update.getMessage() != null && update.getMessage().getText().contains("\n")){
             sendMessage = parseCommandService.parseAboutPerson(update.getMessage().getText(), update.getMessage().getChatId());
             sendMessage.setChatId(update.getMessage().getChatId());
