@@ -23,6 +23,23 @@ public class ButtonService {
     @Autowired
     private DbService dbService;
 
+    /**
+    
+    лучше перенести в енам
+    
+    BotCommandEnum implements ButtonTypeService
+    
+    START {
+            public SendMessage getButtonByCommand() {
+            ...
+        },
+   HELP {
+            public SendMessage getButtonByCommand() {
+            ...
+        };   
+        
+    
+    */
     public SendMessage getButtonByCommand(BotCommandEnum commandEnum, long chatId){
         switch (commandEnum) {
             case START -> {
@@ -42,6 +59,10 @@ public class ButtonService {
         return new SendMessage();
     }
 
+    /**
+    
+    точно нужна такая вложенность List<List<InlineKeyboardButton>>?
+    */
     private SendMessage createKeyboardButtons(Map<String, String> paramMap){
         SendMessage sendMessage = new SendMessage();
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
@@ -61,7 +82,12 @@ public class ButtonService {
 
         return sendMessage;
     }
-
+    
+    /**
+    
+    странный переключатель с одним значением
+    
+    */
     public SendMessage getButtonByCommand(ButtonCommandEnum buttonCommandEnum, long chatId) {
 
         switch (buttonCommandEnum) {
@@ -79,6 +105,11 @@ public class ButtonService {
         return new SendMessage();
     }
 
+    /**
+    
+   в enum ButtonMenuCommandEnum
+    
+    */
     public SendMessage getMenuButtons() {
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("//" + ButtonMenuCommandEnum.SEARCH.name(), ButtonMenuCommandEnum.SEARCH.getDescription());
