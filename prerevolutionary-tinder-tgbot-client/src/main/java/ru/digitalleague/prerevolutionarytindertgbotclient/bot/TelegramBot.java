@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.service.BotCommandService;
+import ru.digitalleague.prerevolutionarytindertgbotclient.bot.service.MessageService;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.service.ParseCommandService;
 import ru.digitalleague.prerevolutionarytindertgbotclient.config.BotConfiguration;
 
@@ -29,6 +30,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
     private ParseCommandService parseCommandService;
+
+    @Autowired
+    private MessageService messageService;
 
     public void initBotCommands() {
         try {
@@ -56,6 +60,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         //TODO
         SendMessage sendMessage = new SendMessage();
         SendPhoto sendPhoto = null;
+
         if (update.getMessage() != null && update.getMessage().getText().contains("/")) {
             sendMessage = parseCommandService.parseCommand(update.getMessage().getText(), update.getMessage().getChatId());
             sendMessage.setChatId(update.getMessage().getChatId());
@@ -65,7 +70,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         } else if (update.getMessage() != null && !update.getMessage().getText().contains("\n")){
             sendMessage = parseCommandService.parsePersonName(update.getMessage().getText(), update.getMessage().getChatId());
             sendMessage.setChatId(update.getMessage().getChatId());
-//
         } else if (update.getMessage() != null && update.getMessage().getText().contains("\n")){
             sendMessage = parseCommandService.parseAboutPerson(update.getMessage().getText(), update.getMessage().getChatId());
             sendMessage.setChatId(update.getMessage().getChatId());
