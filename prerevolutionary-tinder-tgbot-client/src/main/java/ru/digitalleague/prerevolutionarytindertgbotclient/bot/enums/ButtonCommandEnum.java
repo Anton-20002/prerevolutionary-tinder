@@ -4,32 +4,32 @@ public enum ButtonCommandEnum {
 
     SUDAR {
         public String getDescription() {
-            return "choose SUDAR";
+            return "/sudar";
         }
     },
     SUDARINYA {
         public String getDescription() {
-            return "choose SUDARINYA";
+            return "/sudarinya";
         }
     },
     ABOUT {
         public String getDescription() {
-            return "get about command";
+            return "/about";
         }
     },
     ALL_PERSON_SEARCH {
         public String getDescription() {
-            return "choose ALL_PERSON for search accounts";
+            return "/all_person_search";
         }
     },
     SUDAR_SEARCH {
         public String getDescription() {
-            return "choose SUDAR_SEARCH for search accounts";
+            return "/sudar_search";
         }
     },
     SUDARINYA_SEARCH {
         public String getDescription() {
-            return "choose SUDARINYA_SEARCH for search accounts";
+            return "/sudarinya_search";
         }
     };
 

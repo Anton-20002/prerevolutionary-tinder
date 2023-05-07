@@ -1,6 +1,5 @@
 package ru.digitalleague.prerevolutionarytindertgbotclient.bot.service;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,21 +22,24 @@ public class ButtonService {
     @Autowired
     private DbService dbService;
 
+    @Autowired
+    private MessageService messageService;
+
     public SendMessage getButtonByCommand(BotCommandEnum commandEnum, long chatId){
         switch (commandEnum) {
             case START -> {
                 if (!dbService.isRegistered(chatId)){
-
                     Map<String, String> paramMap = new HashMap<>();
-                    paramMap.put("sudar", "Сударь");
-                    paramMap.put("sudarinya", "Сударыня");
+                    paramMap.put(messageService.getMessage("bot.command.person.sudar.description"),messageService.getMessage("bot.command.person.sudar.name"));
+                    paramMap.put(messageService.getMessage("bot.command.person.sudarinya.description"),messageService.getMessage("bot.command.person.sudarinya.name"));
 
                     SendMessage sendMessage = createKeyboardButtons(paramMap);
-                    sendMessage.setText("Вы сударь иль сударыня?");
+                    sendMessage.setText(messageService.getMessage("bot.command.person.whoareyou"));
                     return sendMessage;
+                } else {
+                    getMenuButtons();
                 }
             }
-
         }
         return new SendMessage();
     }
@@ -67,9 +69,9 @@ public class ButtonService {
         switch (buttonCommandEnum) {
             case ABOUT -> {
                 Map<String, String> paramMap = new HashMap<>();
-                paramMap.put("sudar_search", "Сударь");
-                paramMap.put("sudarinya_search", "Сударыня");
-                paramMap.put("all_person_search", "Всех");
+//                paramMap.put(ButtonCommandEnum.SUDAR_SEARCH.getDescription(), ButtonCommandEnum.SUDAR_SEARCH.getTranslateName());
+//                paramMap.put(ButtonCommandEnum.SUDARINYA_SEARCH.getDescription(), ButtonCommandEnum.SUDARINYA_SEARCH.getTranslateName());
+//                paramMap.put(ButtonCommandEnum.ALL_PERSON_SEARCH.getDescription(), ButtonCommandEnum.ALL_PERSON_SEARCH.getTranslateName());
 
                 SendMessage sendMessage = createKeyboardButtons(paramMap);
                 sendMessage.setText("Кого вы ищите?");

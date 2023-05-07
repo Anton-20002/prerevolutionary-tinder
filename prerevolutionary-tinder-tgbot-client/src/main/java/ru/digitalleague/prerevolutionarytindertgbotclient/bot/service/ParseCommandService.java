@@ -17,6 +17,12 @@ public class ParseCommandService {
     @Autowired
     private DbService dbService;
 
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private PictureService pictureService;
+
     public SendMessage parseCommand(String textCommand, long chatId) {
         log.info("Parse command");
         SendMessage sendMessage = new SendMessage();
@@ -42,11 +48,11 @@ public class ParseCommandService {
     public SendMessage parseButtonCommand(String data, long chatId) {
         log.info("Parse button command");
         SendMessage sendMessage = new SendMessage();
-        ButtonCommandEnum buttonCommandEnum = ButtonCommandEnum.valueOf(data.toUpperCase());
+        ButtonCommandEnum buttonCommandEnum = ButtonCommandEnum.valueOf(data.toUpperCase().substring(1));
 
         if (buttonCommandEnum.equals(ButtonCommandEnum.SUDAR) || buttonCommandEnum.equals(ButtonCommandEnum.SUDARINYA)){
             dbService.saveMale(chatId, ButtonCommandEnum.SUDAR);
-            sendMessage.setText("Как вас величать?");
+            sendMessage.setText(messageService.getMessage("bot.command.person.whatyourname"));
         } else if (buttonCommandEnum.equals(ButtonCommandEnum.SUDAR_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.SUDARINYA_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.ALL_PERSON_SEARCH)){
             dbService.saveSearchParam(chatId, buttonCommandEnum);
             //TODO обратиться в pictureService и сформировать картинку (заполненную анкету)
@@ -56,20 +62,27 @@ public class ParseCommandService {
         return sendMessage;
     }
 
-    public SendMessage parsePersonName(String personName, long chatId) {
+    public SendMessage parseInputText(String personName, long chatId) {
+
+        if (!dbService.haveName(chatId)){
+            return parsePersonName(personName, chatId);
+        } else {
+            return parseAboutPerson(personName, chatId);
+        }
+    }
+
+    private SendMessage parsePersonName(String personName, long chatId){
         log.info("Parse person name command");
         dbService.savePersonName(personName, chatId);
         SendMessage sendMessage = new SendMessage();
-
-        sendMessage.setText("Опишите себя. \nПри этом первая строка считается Заголовком, все другие строки - Описанием, если строка только одна, то Заголовком считается первое слово");
+        sendMessage.setText(messageService.getMessage("bot.command.person.persondescription"));
         return sendMessage;
     }
 
-    public SendMessage parseAboutPerson(String textCommand, long chatId) {
+    private SendMessage parseAboutPerson(String textCommand, long chatId) {
         log.info("Parse about person command");
         dbService.saveAboutPersonInformation(textCommand, chatId);
-        SendMessage sendMessage = new SendMessage();
-        sendMessage = buttonService.getButtonByCommand(ButtonCommandEnum.ABOUT, chatId);
-        return sendMessage;
+        pictureService.getAccountPicture(chatId);
+        return buttonService.getButtonByCommand(ButtonCommandEnum.ABOUT, chatId);
     }
 }

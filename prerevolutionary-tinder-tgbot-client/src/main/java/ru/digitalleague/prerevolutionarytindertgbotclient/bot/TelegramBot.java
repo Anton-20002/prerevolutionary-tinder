@@ -61,20 +61,16 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage sendMessage = new SendMessage();
         SendPhoto sendPhoto = null;
 
-        if (update.getMessage() != null && update.getMessage().getText().contains("/")) {
-            sendMessage = parseCommandService.parseCommand(update.getMessage().getText(), update.getMessage().getChatId());
+        if (update.getMessage() == null && update.getCallbackQuery() == null){
             sendMessage.setChatId(update.getMessage().getChatId());
-        } else if (update.hasCallbackQuery()) {
-            sendMessage = parseCommandService.parseButtonCommand(update.getCallbackQuery().getData(), update.getCallbackQuery().getMessage().getChatId());
-            sendMessage.setChatId(update.getCallbackQuery().getMessage().getChatId());
-        } else if (update.getMessage() != null && !update.getMessage().getText().contains("\n")){
-            sendMessage = parseCommandService.parsePersonName(update.getMessage().getText(), update.getMessage().getChatId());
-            sendMessage.setChatId(update.getMessage().getChatId());
-        } else if (update.getMessage() != null && update.getMessage().getText().contains("\n")){
-            sendMessage = parseCommandService.parseAboutPerson(update.getMessage().getText(), update.getMessage().getChatId());
-            sendMessage.setChatId(update.getMessage().getChatId());
+            sendMessage.setText(messageService.getMessage("message.bot.command.emptyCommand"));
+        } else {
+            sendMessage = directionMessage(update, sendMessage);
         }
+        sendMessage(update, sendMessage, sendPhoto);
+    }
 
+    private void sendMessage(Update update, SendMessage sendMessage, SendPhoto sendPhoto) {
         try {
             log.info("execute message");
             execute(sendMessage);
@@ -89,5 +85,19 @@ public class TelegramBot extends TelegramLongPollingBot {
             log.error("Error sending message or photo: " + e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+
+    private SendMessage directionMessage(Update update, SendMessage sendMessage) {
+        if (update.getMessage() != null && update.getMessage().getText().startsWith("/")) {
+            sendMessage = parseCommandService.parseCommand(update.getMessage().getText(), update.getMessage().getChatId());
+            sendMessage.setChatId(update.getMessage().getChatId());
+        } else if (update.hasCallbackQuery()) {
+            sendMessage = parseCommandService.parseButtonCommand(update.getCallbackQuery().getData(), update.getCallbackQuery().getMessage().getChatId());
+            sendMessage.setChatId(update.getCallbackQuery().getMessage().getChatId());
+        } else if (update.getMessage() != null && !update.getMessage().getText().contains("\n")){
+            sendMessage = parseCommandService.parseInputText(update.getMessage().getText(), update.getMessage().getChatId());
+            sendMessage.setChatId(update.getMessage().getChatId());
+        }
+        return sendMessage;
     }
 }
