@@ -3,6 +3,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.5'
 	implementation 'org.hibernate:hibernate-core:6.1.7.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-web:3.0.5'
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	implementation 'clojure-interop:java.awt:1.0.5'
 
 	implementation project(':prerevolutionary-tinder-database')
 }

@@ -6,6 +6,7 @@
 
     <include file="scripts/create_schema.sql" relativeToChangelogFile="true"/>
     <include file="scripts/create_person_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/insert_person_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/create_blacklist_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/create_favoritelist_table.sql" relativeToChangelogFile="true"/>
 
