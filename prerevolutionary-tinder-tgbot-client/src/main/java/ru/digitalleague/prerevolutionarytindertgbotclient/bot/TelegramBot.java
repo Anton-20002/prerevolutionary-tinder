@@ -7,10 +7,12 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.digitalleague.prerevolutionarytindertgbotclient.bot.entity.ImageMessageDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.service.BotCommandService;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.service.MessageService;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.service.ParseCommandService;
@@ -60,23 +62,26 @@ public class TelegramBot extends TelegramLongPollingBot {
         //TODO
         SendMessage sendMessage = new SendMessage();
         SendPhoto sendPhoto = null;
+        ImageMessageDto imageMessageDto = null;
 
         if (update.getMessage() == null && update.getCallbackQuery() == null){
             sendMessage.setChatId(update.getMessage().getChatId());
             sendMessage.setText(messageService.getMessage("message.bot.command.emptyCommand"));
         } else {
-            sendMessage = directionMessage(update, sendMessage);
+            imageMessageDto = directionMessage(update, sendMessage, sendPhoto);
         }
-        sendMessage(update, sendMessage, sendPhoto);
+        assert imageMessageDto != null;
+        sendMessage(update, imageMessageDto.getSendMessage(), imageMessageDto.getSendPhoto());
     }
 
     private void sendMessage(Update update, SendMessage sendMessage, SendPhoto sendPhoto) {
         try {
             log.info("execute message");
+
             execute(sendMessage);
             log.info("execute message complete");
             if (sendPhoto != null) {
-                sendPhoto.setChatId(update.getMessage().getChatId());
+//                sendPhoto.setChatId(update.getMessage().getChatId());
                 log.info("execute photo");
                 execute(sendPhoto);
                 log.info("execute photo complete");
@@ -87,17 +92,17 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private SendMessage directionMessage(Update update, SendMessage sendMessage) {
+    private ImageMessageDto directionMessage(Update update, SendMessage sendMessage, SendPhoto sendPhoto) {
+        ImageMessageDto imageMessageDto = new ImageMessageDto();
         if (update.getMessage() != null && update.getMessage().getText().startsWith("/")) {
             sendMessage = parseCommandService.parseCommand(update.getMessage().getText(), update.getMessage().getChatId());
-            sendMessage.setChatId(update.getMessage().getChatId());
+            imageMessageDto.setSendMessage(sendMessage);
         } else if (update.hasCallbackQuery()) {
-            sendMessage = parseCommandService.parseButtonCommand(update.getCallbackQuery().getData(), update.getCallbackQuery().getMessage().getChatId());
-            sendMessage.setChatId(update.getCallbackQuery().getMessage().getChatId());
-        } else if (update.getMessage() != null && !update.getMessage().getText().contains("\n")){
+            imageMessageDto = parseCommandService.parseButtonCommand(update.getCallbackQuery().getData(), update.getCallbackQuery().getMessage().getChatId());
+        } else if (update.getMessage() != null && update.getMessage().getText() != null){
             sendMessage = parseCommandService.parseInputText(update.getMessage().getText(), update.getMessage().getChatId());
-            sendMessage.setChatId(update.getMessage().getChatId());
+            imageMessageDto.setSendMessage(sendMessage);
         }
-        return sendMessage;
+        return imageMessageDto;
     }
 }

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import ru.digitalleague.prerevolutionarytindertgbotclient.bot.entity.ImageMessageDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.BotCommandEnum;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
 
@@ -27,11 +28,11 @@ public class ParseCommandService {
         log.info("Parse command");
         SendMessage sendMessage = new SendMessage();
         String command = textCommand.replaceAll("/", "");
-        BotCommandEnum botCommandEnum = BotCommandEnum.valueOf(command.toUpperCase());
+        BotCommandEnum botAndButtonCommandEnum = BotCommandEnum.valueOf(command.toUpperCase());
 
-        switch (botCommandEnum) {
+        switch (botAndButtonCommandEnum) {
             case START: {
-                sendMessage = buttonService.getButtonByCommand(botCommandEnum, chatId);
+                sendMessage = buttonService.getButtonByCommand(botAndButtonCommandEnum, chatId);
                 break;
             }
             case HELP: {
@@ -45,10 +46,12 @@ public class ParseCommandService {
         return sendMessage;
     }
 
-    public SendMessage parseButtonCommand(String data, long chatId) {
+    public ImageMessageDto parseButtonCommand(String data, long chatId) {
         log.info("Parse button command");
         SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
         ButtonCommandEnum buttonCommandEnum = ButtonCommandEnum.valueOf(data.toUpperCase().substring(1));
+        ImageMessageDto imageMessageDto = new ImageMessageDto();
 
         if (buttonCommandEnum.equals(ButtonCommandEnum.SUDAR) || buttonCommandEnum.equals(ButtonCommandEnum.SUDARINYA)){
             dbService.saveMale(chatId, ButtonCommandEnum.SUDAR);
@@ -56,10 +59,12 @@ public class ParseCommandService {
         } else if (buttonCommandEnum.equals(ButtonCommandEnum.SUDAR_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.SUDARINYA_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.ALL_PERSON_SEARCH)){
             dbService.saveSearchParam(chatId, buttonCommandEnum);
             //TODO обратиться в pictureService и сформировать картинку (заполненную анкету)
-            sendMessage = buttonService.getMenuButtons();
+            imageMessageDto.setSendPhoto(dbService.getAccountPicture(chatId));
+            sendMessage = buttonService.getMenuButtons(chatId);
         }
+        imageMessageDto.setSendMessage(sendMessage);
 
-        return sendMessage;
+        return imageMessageDto;
     }
 
     public SendMessage parseInputText(String personName, long chatId) {
@@ -75,6 +80,7 @@ public class ParseCommandService {
         log.info("Parse person name command");
         dbService.savePersonName(personName, chatId);
         SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
         sendMessage.setText(messageService.getMessage("bot.command.person.persondescription"));
         return sendMessage;
     }
@@ -82,7 +88,6 @@ public class ParseCommandService {
     private SendMessage parseAboutPerson(String textCommand, long chatId) {
         log.info("Parse about person command");
         dbService.saveAboutPersonInformation(textCommand, chatId);
-        pictureService.getAccountPicture(chatId);
         return buttonService.getButtonByCommand(ButtonCommandEnum.ABOUT, chatId);
     }
 }

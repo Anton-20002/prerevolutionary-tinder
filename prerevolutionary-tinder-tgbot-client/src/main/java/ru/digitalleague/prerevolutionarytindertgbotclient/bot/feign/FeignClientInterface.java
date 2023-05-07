@@ -4,9 +4,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
-
-import java.awt.*;
 
 @FeignClient(name = "feignClientInterface", url = "${feign.global.routes.url}")
 public interface FeignClientInterface {
@@ -15,7 +14,7 @@ public interface FeignClientInterface {
     boolean isRegistered(@RequestParam("chatId") Long chatId);
 
     @RequestMapping(method = RequestMethod.GET, value = "/get-account-picture/{chatId}")
-    Image getAccountPicture(@RequestParam("chatId") Long chatId);
+    SendPhoto getAccountPicture(@RequestParam("chatId") Long chatId);
 
     @RequestMapping(method = RequestMethod.GET, value = "/save-person-male/{chatId}/{buttonCommandEnum}")
     void savePersonMale(@RequestParam("chatId") Long chatId, @RequestParam("buttonCommandEnum") ButtonCommandEnum buttonCommandEnum);

@@ -35,10 +35,12 @@ public class ButtonService {
 
                     SendMessage sendMessage = createKeyboardButtons(paramMap);
                     sendMessage.setText(messageService.getMessage("bot.command.person.whoareyou"));
+                    sendMessage.setChatId(chatId);
                     return sendMessage;
                 } else {
-                    getMenuButtons();
+                    getMenuButtons(chatId);
                 }
+
             }
         }
         return new SendMessage();
@@ -69,25 +71,27 @@ public class ButtonService {
         switch (buttonCommandEnum) {
             case ABOUT -> {
                 Map<String, String> paramMap = new HashMap<>();
-//                paramMap.put(ButtonCommandEnum.SUDAR_SEARCH.getDescription(), ButtonCommandEnum.SUDAR_SEARCH.getTranslateName());
-//                paramMap.put(ButtonCommandEnum.SUDARINYA_SEARCH.getDescription(), ButtonCommandEnum.SUDARINYA_SEARCH.getTranslateName());
-//                paramMap.put(ButtonCommandEnum.ALL_PERSON_SEARCH.getDescription(), ButtonCommandEnum.ALL_PERSON_SEARCH.getTranslateName());
+                paramMap.put(messageService.getMessage("bot.command.search.sudar.description"),messageService.getMessage("bot.command.search.sudar.name"));
+                paramMap.put(messageService.getMessage("bot.command.search.sudarinya.description"),messageService.getMessage("bot.command.search.sudarinya.name"));
+                paramMap.put(messageService.getMessage("bot.command.search.all_person_search.description"),messageService.getMessage("bot.command.search.all_person_search.name"));
 
                 SendMessage sendMessage = createKeyboardButtons(paramMap);
-                sendMessage.setText("Кого вы ищите?");
+                sendMessage.setText(messageService.getMessage("bot.command.search.whoareyou"));
+                sendMessage.setChatId(chatId);
                 return sendMessage;
             }
         }
         return new SendMessage();
     }
 
-    public SendMessage getMenuButtons() {
+    public SendMessage getMenuButtons(long chatId) {
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("//" + ButtonMenuCommandEnum.SEARCH.name(), ButtonMenuCommandEnum.SEARCH.getDescription());
         paramMap.put("//" + ButtonMenuCommandEnum.ACCOUNT.name(), ButtonMenuCommandEnum.ACCOUNT.getDescription());
         paramMap.put("//" + ButtonMenuCommandEnum.FAVORITES.name(), ButtonMenuCommandEnum.FAVORITES.getDescription());
         SendMessage sendMessage = createKeyboardButtons(paramMap);
         sendMessage.setText("Меню");
+        sendMessage.setChatId(chatId);
         return sendMessage;
     }
 }
