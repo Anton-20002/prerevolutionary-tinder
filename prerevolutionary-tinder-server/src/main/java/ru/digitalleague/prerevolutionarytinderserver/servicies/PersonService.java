@@ -1,15 +1,16 @@
 package ru.digitalleague.prerevolutionarytinderserver.servicies;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
 import ru.digitalleague.prerevolutionarytinderdatabase.entities.Person;
+import ru.digitalleague.prerevolutionarytinderdatabase.enums.Gender;
+import ru.digitalleague.prerevolutionarytinderdatabase.enums.Orientation;
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.BlackListRepository;
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.FavoriteListRepository;
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.PersonRepository;
 
-import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,9 +48,7 @@ public class PersonService {
         favoriteDatingProfiles.addAll(anotherDatingProfiles);
 
         List<PersonDto> resultDatingProfiles = favoriteDatingProfiles.stream()
-                .map(person -> {
-                    return mapPersonOnPersonDto(person);
-                })
+                .map(person -> mapPersonOnPersonDto(person))
                 .collect(Collectors.toList());
 
         return resultDatingProfiles;
@@ -64,8 +63,74 @@ public class PersonService {
         personDto.setAge(person.getAge());
         personDto.setHeader(person.getHeader());
         personDto.setDescription(person.getDescription());
-        BufferedImage bufferedImage = imageService.createImage(person.getHeader(), person.getAge(), person.getDescription());
-        personDto.setImage(bufferedImage);
+        File file = imageService.createImage(person.getId(), person.getHeader(), person.getAge(), person.getDescription());
+        personDto.setImageFile(file);
         return personDto;
+    }
+
+    public File getAccountPicture(Long chatId) {
+        Optional<Person> personOptional = personRepository.findByChatId(chatId);
+        Person person = personOptional.orElse(null);
+
+        if (person == null) return new File("empty.png");
+
+        return imageService.createImage(person.getId(), person.getHeader(), person.getAge(), person.getDescription());
+    }
+
+    public boolean savePersonGender(Long chatId, String gender) {
+        Optional<Person> personOptional = personRepository.findByChatId(chatId);
+        Person person = personOptional.orElse(null);
+
+        if (person == null) return false;
+
+        person.setGender(Gender.valueOf(gender));
+        personRepository.save(person);
+        return true;
+    }
+
+    public boolean savePersonName(Long chatId, String personName) {
+        Optional<Person> personOptional = personRepository.findByChatId(chatId);
+        Person person = personOptional.orElse(null);
+
+        if (person == null) return false;
+
+        person.setNickname(personName);
+        personRepository.save(person);
+        return true;
+    }
+
+    public boolean savePersonAboutInfo(Long chatId, String aboutText) {
+        Optional<Person> personOptional = personRepository.findByChatId(chatId);
+        Person person = personOptional.orElse(null);
+
+        if (person == null) return false;
+
+        person.setDescription(aboutText);
+        personRepository.save(person);
+        return true;
+    }
+
+    public boolean havePersonName(Long chatId) {
+        Optional<Person> personOptional = personRepository.findByChatId(chatId);
+        Person person = personOptional.orElse(null);
+
+        if (person == null) {
+            return false;
+        }
+        if (person.getNickname() == null || person.getNickname().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean savePersonOrientation(Long chatId, String orientation) {
+        Optional<Person> personOptional = personRepository.findByChatId(chatId);
+        Person person = personOptional.orElse(null);
+
+        if (person == null) return false;
+
+        person.setOrientation(Orientation.valueOf(orientation));
+        personRepository.save(person);
+        return true;
     }
 }

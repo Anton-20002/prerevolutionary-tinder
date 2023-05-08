@@ -15,4 +15,6 @@ dependencies {
     implementation 'io.github.openfeign:feign-okhttp:12.1'
     implementation 'io.github.openfeign:feign-gson:12.1'
 
+    implementation project(':prerevolutionary-tinder-database')
+
 }

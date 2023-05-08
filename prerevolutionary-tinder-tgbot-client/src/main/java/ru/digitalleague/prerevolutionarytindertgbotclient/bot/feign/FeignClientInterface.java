@@ -4,8 +4,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
+
+import java.io.File;
 
 @FeignClient(name = "feignClientInterface", url = "${feign.global.routes.url}")
 public interface FeignClientInterface {
@@ -14,20 +15,20 @@ public interface FeignClientInterface {
     boolean isRegistered(@RequestParam("chatId") Long chatId);
 
     @RequestMapping(method = RequestMethod.GET, value = "/get-account-picture/{chatId}")
-    SendPhoto getAccountPicture(@RequestParam("chatId") Long chatId);
+    File getAccountPicture(@RequestParam("chatId") Long chatId);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/save-person-male/{chatId}/{buttonCommandEnum}")
-    void savePersonMale(@RequestParam("chatId") Long chatId, @RequestParam("buttonCommandEnum") ButtonCommandEnum buttonCommandEnum);
+    @RequestMapping(method = RequestMethod.GET, value = "/save-person-gender/{chatId}/{gender}")
+    void savePersonGender(@RequestParam("chatId") Long chatId, @RequestParam("gender") String gender);
 
     @RequestMapping(method = RequestMethod.GET, value = "/save-person-name/{chatId}/{personName}")
     void savePersonName(@RequestParam("chatId") Long chatId, @RequestParam("personName") String personName);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/save-person-about-info{chatId}/{aboutText}")
+    @RequestMapping(method = RequestMethod.GET, value = "/save-person-about-info/{chatId}/{aboutText}")
     void savePersonAboutInfo(@RequestParam("chatId") Long chatId , @RequestParam("aboutText") String aboutText);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/have-person-name{chatId}/")
+    @RequestMapping(method = RequestMethod.GET, value = "/have-person-name/{chatId}/")
     boolean havePersonName(@RequestParam("chatId") Long chatId);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/save-person-search-param/{chatId}/{buttonCommandEnum}")
-    void savePersonSearchParam(@RequestParam("chatId") Long chatId, @RequestParam("buttonCommandEnum") ButtonCommandEnum buttonCommandEnum);
+    @RequestMapping(method = RequestMethod.GET, value = "/save-person-search-param/{chatId}/{orientation}")
+    void savePersonOrientation(@RequestParam("chatId") Long chatId, @RequestParam("orientation") String orientation);
 }

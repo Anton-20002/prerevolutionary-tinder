@@ -6,6 +6,7 @@ import ru.digitalleague.prerevolutionarytinderdatabase.enums.Gender;
 import ru.digitalleague.prerevolutionarytinderdatabase.enums.Orientation;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 @Getter
 @Setter
@@ -17,5 +18,5 @@ public class PersonDto {
     private String age;
     private String header;
     private String description;
-    private BufferedImage image;
+    private File imageFile;
 }

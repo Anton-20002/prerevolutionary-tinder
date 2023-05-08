@@ -1,17 +1,12 @@
 package ru.digitalleague.prerevolutionarytinderserver.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
-import ru.digitalleague.prerevolutionarytinderdatabase.entities.Person;
-import ru.digitalleague.prerevolutionarytinderdatabase.repositories.PersonRepository;
 import ru.digitalleague.prerevolutionarytinderserver.servicies.PersonService;
 
+import java.io.File;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/person-controller")
@@ -28,5 +23,35 @@ public class PersonController {
     @GetMapping(value = "/get-dating-profiles-by-chat-id/{chatId}")
     public List<PersonDto> getDatingProfilesByChatId(@PathVariable("chatId") Long chatId) {
         return personService.getDatingProfilesByChatId(chatId);
+    }
+
+    @GetMapping(value = "/get-account-picture/{chatId}")
+    public File getAccountPicture(@RequestParam("chatId") Long chatId) {
+        return personService.getAccountPicture(chatId);
+    }
+
+    @GetMapping(value = "/save-person-gender/{chatId}/{gender}")
+    public void savePersonGender(@RequestParam("chatId") Long chatId, @RequestParam("gender") String gender) {
+        personService.savePersonGender(chatId, gender);
+    }
+
+    @GetMapping(value = "/save-person-name/{chatId}/{personName}")
+    public void savePersonName(@RequestParam("chatId") Long chatId, @RequestParam("personName") String personName) {
+        personService.savePersonName(chatId, personName);
+    }
+
+    @GetMapping(value = "/save-person-about-info/{chatId}/{aboutText}")
+    public void savePersonAboutInfo(@RequestParam("chatId") Long chatId , @RequestParam("aboutText") String aboutText) {
+        personService.savePersonAboutInfo(chatId, aboutText);
+    }
+
+    @GetMapping(value = "/have-person-name/{chatId}/")
+    public boolean havePersonName(@RequestParam("chatId") Long chatId) {
+        return personService.havePersonName(chatId);
+    }
+
+    @GetMapping(value = "/save-person-orientation/{chatId}/{orientation}")
+    public void savePersonOrientation(@RequestParam("chatId") Long chatId, @RequestParam("orientation") String orientation) {
+        personService.savePersonOrientation(chatId, orientation);
     }
 }
