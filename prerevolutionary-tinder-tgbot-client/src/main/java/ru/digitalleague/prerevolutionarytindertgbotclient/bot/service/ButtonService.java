@@ -38,9 +38,8 @@ public class ButtonService {
                     sendMessage.setChatId(chatId);
                     return sendMessage;
                 } else {
-                    getMenuButtons(chatId);
+                    return getMenuButtons(chatId);
                 }
-
             }
         }
         return new SendMessage();
@@ -86,11 +85,11 @@ public class ButtonService {
 
     public SendMessage getMenuButtons(long chatId) {
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("//" + ButtonMenuCommandEnum.SEARCH.name(), ButtonMenuCommandEnum.SEARCH.getDescription());
-        paramMap.put("//" + ButtonMenuCommandEnum.ACCOUNT.name(), ButtonMenuCommandEnum.ACCOUNT.getDescription());
-        paramMap.put("//" + ButtonMenuCommandEnum.FAVORITES.name(), ButtonMenuCommandEnum.FAVORITES.getDescription());
+        paramMap.put(messageService.getMessage("bot.command.menu.search.description"),messageService.getMessage("bot.command.menu.search.name"));
+        paramMap.put(messageService.getMessage("bot.command.menu.account.description"),messageService.getMessage("bot.command.menu.account.name"));
+        paramMap.put(messageService.getMessage("bot.command.menu.favorites.description"),messageService.getMessage("bot.command.menu.favorites.name"));
         SendMessage sendMessage = createKeyboardButtons(paramMap);
-        sendMessage.setText("Меню");
+        sendMessage.setText(messageService.getMessage("bot.command.menu.menu"));
         sendMessage.setChatId(chatId);
         return sendMessage;
     }
