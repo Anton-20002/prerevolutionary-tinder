@@ -30,8 +30,8 @@ public class ButtonService {
             case START -> {
                 if (!dbService.isRegistered(chatId)){
                     Map<String, String> paramMap = new HashMap<>();
-                    paramMap.put(messageService.getMessage("bot.command.person.sudar.description"),messageService.getMessage("bot.command.person.sudar.name"));
-                    paramMap.put(messageService.getMessage("bot.command.person.sudarinya.description"),messageService.getMessage("bot.command.person.sudarinya.name"));
+                    paramMap.put(messageService.getMessage("bot.command.person.male.description"),messageService.getMessage("bot.command.person.male.name"));
+                    paramMap.put(messageService.getMessage("bot.command.person.female.description"),messageService.getMessage("bot.command.person.female.name"));
 
                     SendMessage sendMessage = createKeyboardButtons(paramMap);
                     sendMessage.setText(messageService.getMessage("bot.command.person.whoareyou"));
@@ -71,9 +71,9 @@ public class ButtonService {
         switch (buttonCommandEnum) {
             case ABOUT -> {
                 Map<String, String> paramMap = new HashMap<>();
-                paramMap.put(messageService.getMessage("bot.command.search.sudar.description"),messageService.getMessage("bot.command.search.sudar.name"));
-                paramMap.put(messageService.getMessage("bot.command.search.sudarinya.description"),messageService.getMessage("bot.command.search.sudarinya.name"));
-                paramMap.put(messageService.getMessage("bot.command.search.all_person_search.description"),messageService.getMessage("bot.command.search.all_person_search.name"));
+                paramMap.put(messageService.getMessage("bot.command.search.male.description"),messageService.getMessage("bot.command.search.male.name"));
+                paramMap.put(messageService.getMessage("bot.command.search.female.description"),messageService.getMessage("bot.command.search.female.name"));
+                paramMap.put(messageService.getMessage("bot.command.search.all_search.description"),messageService.getMessage("bot.command.search.all_search.name"));
 
                 SendMessage sendMessage = createKeyboardButtons(paramMap);
                 sendMessage.setText(messageService.getMessage("bot.command.search.whoareyou"));

@@ -71,10 +71,10 @@ public class TelegramBot extends TelegramLongPollingBot {
             imageMessageDto = directionMessage(update, sendMessage, sendPhoto);
         }
         assert imageMessageDto != null;
-        sendMessage(update, imageMessageDto.getSendMessage(), imageMessageDto.getSendPhoto());
+        sendMessage(imageMessageDto.getSendMessage(), imageMessageDto.getSendPhoto());
     }
 
-    private void sendMessage(Update update, SendMessage sendMessage, SendPhoto sendPhoto) {
+    private void sendMessage(SendMessage sendMessage, SendPhoto sendPhoto) {
         try {
             log.info("execute message");
 

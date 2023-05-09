@@ -2,12 +2,12 @@ package ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums;
 
 public enum ButtonCommandEnum {
 
-    SUDAR {
+    MALE {
         public String getDescription() {
             return "/sudar";
         }
     },
-    SUDARINYA {
+    FEMALE {
         public String getDescription() {
             return "/sudarinya";
         }
@@ -17,17 +17,17 @@ public enum ButtonCommandEnum {
             return "/about";
         }
     },
-    ALL_PERSON_SEARCH {
+    ALL_SEARCH {
         public String getDescription() {
             return "/all_person_search";
         }
     },
-    SUDAR_SEARCH {
+    MALE_SEARCH {
         public String getDescription() {
             return "/sudar_search";
         }
     },
-    SUDARINYA_SEARCH {
+    FEMALE_SEARCH {
         public String getDescription() {
             return "/sudarinya_search";
         }

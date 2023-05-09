@@ -3,7 +3,7 @@ package ru.digitalleague.prerevolutionarytinderdatabase.enums;
 import java.util.List;
 
 public enum Orientation {
-    MALE {
+    MALE_SEARCH {
         @Override
         public String getRussianName() {
             return "Судари";
@@ -14,7 +14,7 @@ public enum Orientation {
             return List.of(Gender.MALE.name());
         }
     },
-    FEMALE {
+    FEMALE_SEARCH {
         @Override
         public String getRussianName() {
             return "Сударыни";
@@ -25,7 +25,7 @@ public enum Orientation {
             return List.of(Gender.FEMALE.name());
         }
     },
-    ALL {
+    ALL_SEARCH {
         @Override
         public String getRussianName() {
             return "Все";

@@ -11,7 +11,7 @@ public enum Gender {
 
         @Override
         public List<String> getPartnersOrientations() {
-            return List.of(Orientation.MALE.name(), Orientation.ALL.name());
+            return List.of(Orientation.MALE_SEARCH.name(), Orientation.ALL_SEARCH.name());
         }
     },
     FEMALE {
@@ -22,7 +22,7 @@ public enum Gender {
 
         @Override
         public List<String> getPartnersOrientations() {
-            return List.of(Orientation.FEMALE.name(), Orientation.ALL.name());
+            return List.of(Orientation.FEMALE_SEARCH.name(), Orientation.ALL_SEARCH.name());
         }
     };
 

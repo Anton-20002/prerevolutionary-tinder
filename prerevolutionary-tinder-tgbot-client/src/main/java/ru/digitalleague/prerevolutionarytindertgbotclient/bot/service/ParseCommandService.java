@@ -53,12 +53,11 @@ public class ParseCommandService {
         ButtonCommandEnum buttonCommandEnum = ButtonCommandEnum.valueOf(data.toUpperCase().substring(1));
         ImageMessageDto imageMessageDto = new ImageMessageDto();
 
-        if (buttonCommandEnum.equals(ButtonCommandEnum.SUDAR) || buttonCommandEnum.equals(ButtonCommandEnum.SUDARINYA)){
-            dbService.saveMale(chatId, ButtonCommandEnum.SUDAR);
+        if (buttonCommandEnum.equals(ButtonCommandEnum.MALE) || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE)){
+            dbService.savePersonGender(chatId, buttonCommandEnum);
             sendMessage.setText(messageService.getMessage("bot.command.person.whatyourname"));
-        } else if (buttonCommandEnum.equals(ButtonCommandEnum.SUDAR_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.SUDARINYA_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.ALL_PERSON_SEARCH)){
-            dbService.saveSearchParam(chatId, buttonCommandEnum);
-            //TODO обратиться в pictureService и сформировать картинку (заполненную анкету)
+        } else if (buttonCommandEnum.equals(ButtonCommandEnum.MALE_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.ALL_SEARCH)){
+            dbService.savePersonOrientation(chatId, buttonCommandEnum);
             imageMessageDto.setSendPhoto(dbService.getAccountPicture(chatId));
             sendMessage = buttonService.getMenuButtons(chatId);
         }
