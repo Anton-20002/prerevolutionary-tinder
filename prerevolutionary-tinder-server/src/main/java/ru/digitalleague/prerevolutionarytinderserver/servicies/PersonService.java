@@ -140,11 +140,7 @@ public class PersonService {
 
     public boolean savePersonGender(Long chatId, String gender) {
         log.info("Save person by chatId {} with gender {}", chatId, gender);
-        Optional<Person> personOptional = personRepository.findByChatId(chatId);
-        Person person = personOptional.orElse(null);
-
-        if (person == null) return false;
-
+        Person person = new Person();
         person.setGender(Gender.valueOf(gender));
         personRepository.save(person);
         return true;
