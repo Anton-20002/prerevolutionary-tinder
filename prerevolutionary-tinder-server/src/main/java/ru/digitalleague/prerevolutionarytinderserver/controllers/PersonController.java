@@ -7,6 +7,7 @@ import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
 import ru.digitalleague.prerevolutionarytinderserver.servicies.PersonService;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/get-account-picture/{chatId}")
-    public File getAccountPicture(@RequestParam("chatId") Long chatId) {
+    public @ResponseBody byte[] getAccountPicture(@RequestParam("chatId") Long chatId) {
         return personService.getAccountPicture(chatId);
     }
 

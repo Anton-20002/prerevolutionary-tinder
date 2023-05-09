@@ -15,7 +15,9 @@ import ru.digitalleague.prerevolutionarytinderdatabase.repositories.BlackListRep
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.FavoriteListRepository;
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.PersonRepository;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -72,8 +74,8 @@ public class PersonService {
         personDto.setAge(person.getAge());
         personDto.setHeader(person.getHeader());
         personDto.setDescription(person.getDescription());
-        File file = imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
-        personDto.setImageFile(file);
+        byte[] imageFile = imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
+        personDto.setImageFile(imageFile);
         return personDto;
     }
 
@@ -103,8 +105,8 @@ public class PersonService {
         favoritePersonDto.setAge(person.getAge());
         favoritePersonDto.setHeader(person.getHeader());
         favoritePersonDto.setDescription(person.getDescription());
-        File file = imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
-        favoritePersonDto.setImageFile(file);
+        byte[] imageFile = imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
+        favoritePersonDto.setImageFile(imageFile);
         favoritePersonDto.setRomanceStatus(getRomanceStatus(mainPersonId, person.getId()));
         return favoritePersonDto;
     }
@@ -128,12 +130,12 @@ public class PersonService {
         }
     }
 
-    public File getAccountPicture(Long chatId) {
+    public byte[] getAccountPicture(Long chatId) {
         log.info("Get account picture chatId {}", chatId);
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         Person person = personOptional.orElse(null);
 
-        if (person == null) return new File("empty.png");
+        if (person == null) return null;
 
         return imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
     }

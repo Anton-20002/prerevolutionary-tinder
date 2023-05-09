@@ -16,6 +16,7 @@ import ru.digitalleague.prerevolutionarytinderserver.servicies.ImageService;
 import ru.digitalleague.prerevolutionarytinderserver.servicies.PersonService;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,16 +63,16 @@ class PrerevolutionaryTinderServerApplicationTests {
 		Person person = new Person();
 		person.setId(1L);
 		when(personRepository.findByChatId(chatId)).thenReturn(Optional.of(person));
-		File file = personService.getAccountPicture(chatId);
-		Assert.assertFalse(file.getName().equals("empty.png"));
+		byte[] imageFile = personService.getAccountPicture(chatId);
+		Assert.assertFalse(imageFile == null);
 	}
 
 	@Test
 	void getAccountPictureByChatId_shouldReturnTrue() {
 		Long chatId = 00000L;
 		when(personRepository.findByChatId(chatId)).thenReturn(Optional.empty());
-		File file = personService.getAccountPicture(chatId);
-		Assert.assertTrue(file.getName().equals("empty.png"));
+		byte[] imageFile = personService.getAccountPicture(chatId);
+		Assert.assertTrue(imageFile == null);
 	}
 
 	@Test

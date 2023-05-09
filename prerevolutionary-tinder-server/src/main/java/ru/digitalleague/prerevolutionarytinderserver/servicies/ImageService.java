@@ -10,7 +10,7 @@ import java.io.*;
 @Service
 public class ImageService {
 
-    public File createImage(Long id, String header, String age, String description) {
+    public byte[] createImage(Long id, String header, String age, String description) {
         BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
 
         Graphics graphics = bufferedImage.getGraphics();
@@ -31,22 +31,22 @@ public class ImageService {
 
         byte[] byteArray = bas.toByteArray();
 
-        InputStream inputStream = new ByteArrayInputStream(byteArray);
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(inputStream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        InputStream inputStream = new ByteArrayInputStream(byteArray);
+//        BufferedImage image = null;
+//        try {
+//            image = ImageIO.read(inputStream);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        File outputfile = new File("info" + id.toString() + ".png");
+//
+//        try {
+//            ImageIO.write(image, "png", outputfile);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        File outputfile = new File("info" + id.toString() + ".png");
-
-        try {
-            ImageIO.write(image, "png", outputfile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return outputfile;
+        return byteArray;
     }
 }
