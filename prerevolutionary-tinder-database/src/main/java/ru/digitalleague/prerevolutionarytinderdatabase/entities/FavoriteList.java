@@ -19,7 +19,7 @@ public class FavoriteList {
     @Column(name = "person_id", nullable = false)
     private Long personId;
     @Column(name = "favorite_person_id", nullable = false)
-    private Long bannedPersonId;
+    private Long favoritePersonId;
     @Column(name = "romance_status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private RomanceStatus romanceStatus;
