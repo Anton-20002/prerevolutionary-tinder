@@ -58,7 +58,7 @@ public class ParseCommandService {
             sendMessage.setText(messageService.getMessage("bot.command.person.whatyourname"));
         } else if (buttonCommandEnum.equals(ButtonCommandEnum.MALE_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.ALL_SEARCH)) {
             dbService.savePersonOrientation(chatId, buttonCommandEnum);
-            imageMessageDto.setSendPhoto(dbService.getAccountPicture(chatId));
+            imageMessageDto.setSendPhoto(pictureService.getPicture(chatId));
             sendMessage = buttonService.getMenuButtons(chatId);
         }
         imageMessageDto.setSendMessage(sendMessage);

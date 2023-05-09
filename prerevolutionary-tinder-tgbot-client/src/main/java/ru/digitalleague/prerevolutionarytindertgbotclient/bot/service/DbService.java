@@ -3,12 +3,10 @@ package ru.digitalleague.prerevolutionarytindertgbotclient.bot.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.feign.FeignClientInterface;
 
-import java.io.File;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -41,14 +39,8 @@ public class DbService {
         return feignClientInterface.havePersonName(chatId);
     }
 
-    public SendPhoto getAccountPicture(long chatId) {
-        File accountPicture = feignClientInterface.getAccountPicture(chatId);
-        InputFile inputFile = new InputFile();
-        inputFile.setMedia(accountPicture);
-        SendPhoto sendPhoto = new SendPhoto();
-        sendPhoto.setChatId(chatId);
-        sendPhoto.setPhoto(inputFile);
-        return sendPhoto;
+    public List<Byte> getAccountPicture(long chatId) {
+        return feignClientInterface.getAccountPicture(chatId);
     }
 
     public boolean haveAge(long chatId) {
