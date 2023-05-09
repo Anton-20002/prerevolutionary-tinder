@@ -2,6 +2,7 @@ package ru.digitalleague.prerevolutionarytinderserver.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.digitalleague.prerevolutionarytinderdatabase.dtos.FavoritePersonDto;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
 import ru.digitalleague.prerevolutionarytinderserver.servicies.PersonService;
 
@@ -23,6 +24,11 @@ public class PersonController {
     @GetMapping(value = "/get-dating-profiles-by-chat-id/{chatId}")
     public List<PersonDto> getDatingProfilesByChatId(@PathVariable("chatId") Long chatId) {
         return personService.getDatingProfilesByChatId(chatId);
+    }
+
+    @GetMapping(value = "/get-favorites-profiles-by-chat-id/{chatId}")
+    public List<FavoritePersonDto> getFavoritesProfilesByChatId(@PathVariable("chatId") Long chatId) {
+        return personService.getFavoritesProfilesByChatId(chatId);
     }
 
     @GetMapping(value = "/get-account-picture/{chatId}")
@@ -53,5 +59,15 @@ public class PersonController {
     @GetMapping(value = "/save-person-orientation/{chatId}/{orientation}")
     public void savePersonOrientation(@RequestParam("chatId") Long chatId, @RequestParam("orientation") String orientation) {
         personService.savePersonOrientation(chatId, orientation);
+    }
+
+    @GetMapping(value = "/add-person-to-blacklist/{chatId}/{bannedPersonId}")
+    public boolean addPersonToBlacklist(@RequestParam("chatId") Long chatId, @RequestParam("bannedPersonId") Long bannedPersonId) {
+        return personService.addPersonToBlacklist(chatId, bannedPersonId);
+    }
+
+    @GetMapping(value = "/add-person-to-favotitelist/{chatId}/{favoritePersonId}")
+    public boolean addPersonToFavoritelist(@RequestParam("chatId") Long chatId, @RequestParam("favoritePersonId") Long favoritePersonId) {
+        return personService.addPersonToFavoritelist(chatId, favoritePersonId);
     }
 }

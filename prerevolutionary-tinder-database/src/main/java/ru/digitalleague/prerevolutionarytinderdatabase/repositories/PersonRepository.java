@@ -21,6 +21,14 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     List<Person> getFavoriteDatingProfilesByPersonId(Long personId);
 
     @Modifying
+    @Query(value = "SELECT DISTINCT p.* FROM tinder.persons p " +
+            "WHERE person_id IN (SELECT favorite_person_id FROM tinder.favoritelist WHERE person_id = ?1) " +
+            "AND person_id IN (SELECT person_id FROM tinder.favoritelist WHERE favorite_person_id = ?1) " +
+            "AND person_id NOT IN (SELECT banned_person_id FROM tinder.blacklist WHERE person_id = ?1)",
+            nativeQuery = true)
+    List<Person> getDistinctFavoriteDatingProfilesByPersonId(Long personId);
+
+    @Modifying
     @Query(value = "SELECT p.* FROM tinder.persons p " +
             "WHERE person_id NOT IN (SELECT person_id FROM tinder.favoritelist WHERE favorite_person_id = ?1) " +
             "AND person_id NOT IN (SELECT banned_person_id FROM tinder.blacklist WHERE person_id = ?1) " +
