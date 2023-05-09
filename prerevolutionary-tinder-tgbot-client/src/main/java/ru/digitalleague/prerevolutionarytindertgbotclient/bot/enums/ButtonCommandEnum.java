@@ -31,6 +31,11 @@ public enum ButtonCommandEnum {
         public String getDescription() {
             return "/sudarinya_search";
         }
+    },
+    ACCOUNT {
+        public String getDescription() {
+            return "/sudarinya_search";
+        }
     };
 
     public String getDescription() {

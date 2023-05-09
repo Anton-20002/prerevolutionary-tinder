@@ -60,6 +60,9 @@ public class ParseCommandService {
             dbService.savePersonOrientation(chatId, buttonCommandEnum);
             imageMessageDto.setSendPhoto(pictureService.getPicture(chatId));
             sendMessage = buttonService.getMenuButtons(chatId);
+        } else if (buttonCommandEnum.equals(ButtonCommandEnum.ACCOUNT)){
+            imageMessageDto.setSendPhoto(pictureService.getPicture(chatId));
+            sendMessage = buttonService.getMenuButtons(chatId);
         }
         imageMessageDto.setSendMessage(sendMessage);
 
