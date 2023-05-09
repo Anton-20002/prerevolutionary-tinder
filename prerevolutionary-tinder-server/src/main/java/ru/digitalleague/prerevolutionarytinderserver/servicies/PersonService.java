@@ -196,6 +196,51 @@ public class PersonService {
         return true;
     }
 
+    public boolean haveAgePersonByChatId(Long chatId) {
+        Optional<Person> personOptional = personRepository.findByChatId(chatId);
+        Person person = personOptional.orElse(null);
+
+        if (person == null || person.getAge() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean saveAgePersonByChatId(Long chatId, Integer age) {
+        log.info("Save person by chatId {} with age {}", chatId, age);
+        Optional<Person> personOptional = personRepository.findByChatId(chatId);
+        Person person = personOptional.orElse(null);
+
+        if (person == null) return false;
+
+        person.setAge(age);
+        personRepository.save(person);
+        return true;
+    }
+
+    public boolean haveHeaderPersonByChatId(Long chatId) {
+        Optional<Person> personOptional = personRepository.findByChatId(chatId);
+        Person person = personOptional.orElse(null);
+
+        if (person == null || person.getHeader() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean saveHeaderPersonByChatId(Long chatId, String header) {
+        log.info("Save person by chatId {} with header {}", chatId, header);
+        Optional<Person> personOptional = personRepository.findByChatId(chatId);
+        Person person = personOptional.orElse(null);
+
+        if (person == null) return false;
+
+        person.setHeader(header);
+        personRepository.save(person);
+        return true;
+
+    }
+
     public boolean addPersonToBlacklist(Long chatId, Long bannedPersonId) {
         log.info("At chat {} ban person with id {}", chatId, bannedPersonId);
         Optional<Person> personOptional = personRepository.findByChatId(chatId);

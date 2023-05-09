@@ -70,4 +70,25 @@ public class PersonController {
     public boolean addPersonToFavoritelist(@RequestParam("chatId") Long chatId, @RequestParam("favoritePersonId") Long favoritePersonId) {
         return personService.addPersonToFavoritelist(chatId, favoritePersonId);
     }
+
+    @GetMapping(value = "/have-person-age/{chatId}")
+    boolean haveAge(@RequestParam("chatId") Long chatId) {
+        return personService.haveAgePersonByChatId(chatId);
+    }
+
+    @GetMapping(value = "/have-person-header/{chatId}")
+    boolean haveHeader(@RequestParam("chatId") Long chatId) {
+        return personService.haveHeaderPersonByChatId(chatId);
+
+    }
+
+    @GetMapping(value = "/save-person-age/{chatId}/{age}")
+    void savePersonAge(@RequestParam("chatId") Long chatId, @RequestParam("age") Integer age) {
+        personService.saveAgePersonByChatId(chatId, age);
+    }
+
+    @GetMapping(value = "/save-person-header/{chatId}/{header}")
+    void savePersonHeader(@RequestParam("chatId") Long chatId, @RequestParam("header") String header) {
+        personService.saveHeaderPersonByChatId(chatId, header);
+    }
 }
