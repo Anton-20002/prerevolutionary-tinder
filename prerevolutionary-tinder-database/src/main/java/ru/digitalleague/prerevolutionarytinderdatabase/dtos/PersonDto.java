@@ -14,7 +14,7 @@ public class PersonDto {
     private String nickname;
     private Gender gender;
     private Orientation orientation;
-    private String age;
+    private Integer age;
     private String header;
     private String description;
     private File imageFile;

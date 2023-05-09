@@ -12,7 +12,7 @@ import ru.digitalleague.prerevolutionarytinderdatabase.enums.RomanceStatus;
 @SequenceGenerator(schema = "tinder", name = "favoritelist_s", sequenceName = "tinder.favoritelist_s", allocationSize = 1)
 public class FavoriteList {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "favoritelist_s")
     @Column(name = "id", nullable = false)
     private Long id;
 

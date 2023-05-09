@@ -11,7 +11,7 @@ import lombok.Setter;
 @SequenceGenerator(schema = "tinder", name = "blacklist_s", sequenceName = "tinder.blacklist_s", allocationSize = 1)
 public class BlackList {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "blacklist_s")
     @Column(name = "id", nullable = false)
     private Long id;
 

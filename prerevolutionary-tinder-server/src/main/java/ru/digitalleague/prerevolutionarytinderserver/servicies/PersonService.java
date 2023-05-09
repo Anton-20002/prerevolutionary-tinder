@@ -72,7 +72,7 @@ public class PersonService {
         personDto.setAge(person.getAge());
         personDto.setHeader(person.getHeader());
         personDto.setDescription(person.getDescription());
-        File file = imageService.createImage(person.getId(), person.getHeader(), person.getAge(), person.getDescription());
+        File file = imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
         personDto.setImageFile(file);
         return personDto;
     }
@@ -103,7 +103,7 @@ public class PersonService {
         favoritePersonDto.setAge(person.getAge());
         favoritePersonDto.setHeader(person.getHeader());
         favoritePersonDto.setDescription(person.getDescription());
-        File file = imageService.createImage(person.getId(), person.getHeader(), person.getAge(), person.getDescription());
+        File file = imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
         favoritePersonDto.setImageFile(file);
         favoritePersonDto.setRomanceStatus(getRomanceStatus(mainPersonId, person.getId()));
         return favoritePersonDto;
@@ -135,12 +135,13 @@ public class PersonService {
 
         if (person == null) return new File("empty.png");
 
-        return imageService.createImage(person.getId(), person.getHeader(), person.getAge(), person.getDescription());
+        return imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
     }
 
     public boolean savePersonGender(Long chatId, String gender) {
         log.info("Save person by chatId {} with gender {}", chatId, gender);
         Person person = new Person();
+        person.setChatId(chatId);
         person.setGender(Gender.valueOf(gender));
         personRepository.save(person);
         return true;

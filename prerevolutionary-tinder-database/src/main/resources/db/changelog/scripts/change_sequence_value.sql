@@ -1,0 +1,1 @@
+SELECT setval('tinder.persons_s', 9, true);

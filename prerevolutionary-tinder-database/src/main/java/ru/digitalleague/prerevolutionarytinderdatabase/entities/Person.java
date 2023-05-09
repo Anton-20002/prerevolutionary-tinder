@@ -15,7 +15,7 @@ import java.util.List;
 @SequenceGenerator(schema = "tinder", name = "persons_s", sequenceName = "tinder.persons_s", allocationSize = 1)
 public class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "persons_s")
     @Column(name = "person_id", nullable = false)
     private Long id;
 
@@ -34,7 +34,7 @@ public class Person {
     private Orientation orientation;
 
     @Column(name = "age")
-    private String age;
+    private Integer age;
 
     @Column(name = "header")
     private String header;
