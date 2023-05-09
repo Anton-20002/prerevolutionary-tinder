@@ -53,10 +53,10 @@ public class ParseCommandService {
         ButtonCommandEnum buttonCommandEnum = ButtonCommandEnum.valueOf(data.toUpperCase().substring(1));
         ImageMessageDto imageMessageDto = new ImageMessageDto();
 
-        if (buttonCommandEnum.equals(ButtonCommandEnum.MALE) || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE)){
+        if (buttonCommandEnum.equals(ButtonCommandEnum.MALE) || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE)) {
             dbService.savePersonGender(chatId, buttonCommandEnum);
             sendMessage.setText(messageService.getMessage("bot.command.person.whatyourname"));
-        } else if (buttonCommandEnum.equals(ButtonCommandEnum.MALE_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.ALL_SEARCH)){
+        } else if (buttonCommandEnum.equals(ButtonCommandEnum.MALE_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.ALL_SEARCH)) {
             dbService.savePersonOrientation(chatId, buttonCommandEnum);
             imageMessageDto.setSendPhoto(dbService.getAccountPicture(chatId));
             sendMessage = buttonService.getMenuButtons(chatId);
@@ -66,21 +66,47 @@ public class ParseCommandService {
         return imageMessageDto;
     }
 
-    public SendMessage parseInputText(String personName, long chatId) {
+    public SendMessage parseInputText(String textCommand, long chatId) {
 
-        if (!dbService.haveName(chatId)){
-            return parsePersonName(personName, chatId);
+        if (!dbService.haveName(chatId)) {
+            return parsePersonName(textCommand, chatId);
+        } else if (!dbService.haveAge(chatId)) {
+            return parseAge(textCommand, chatId);
+        } else if (!dbService.haveHeader(chatId)) {
+            return parseHeader(textCommand, chatId);
         } else {
-            return parseAboutPerson(personName, chatId);
+            return parseAboutPerson(textCommand, chatId);
         }
     }
 
-    private SendMessage parsePersonName(String personName, long chatId){
+    private SendMessage parseHeader(String textCommand, long chatId) {
+        log.info("Parse person header command");
+        dbService.savePersonHeader(textCommand, chatId);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
+        sendMessage.setText(messageService.getMessage("bot.command.person.persondescription"));
+        return sendMessage;
+    }
+
+    private SendMessage parseAge(String textCommand, long chatId) {
+        log.info("Parse person age command");
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
+        if (!textCommand.isEmpty() && textCommand.length() <= 3) {
+            dbService.savePersonAge(Integer.parseInt(textCommand), chatId);
+            sendMessage.setText(messageService.getMessage("bot.command.person.header"));
+        } else {
+            sendMessage.setText(messageService.getMessage(("message.bot.command.uncorrectage")));
+        }
+        return sendMessage;
+    }
+
+    private SendMessage parsePersonName(String personName, long chatId) {
         log.info("Parse person name command");
         dbService.savePersonName(personName, chatId);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
-        sendMessage.setText(messageService.getMessage("bot.command.person.persondescription"));
+        sendMessage.setText(messageService.getMessage("bot.command.person.age"));
         return sendMessage;
     }
 

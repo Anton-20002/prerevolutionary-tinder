@@ -5,9 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
-import ru.digitalleague.prerevolutionarytinderdatabase.enums.Orientation;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.feign.FeignClientInterface;
+
+import java.io.File;
 
 @Slf4j
 @Service
@@ -19,7 +20,6 @@ public class DbService {
     public boolean isRegistered(long chatId) {
         return feignClientInterface.isRegistered(chatId);
     }
-
 
     public void savePersonGender(long chatId, ButtonCommandEnum buttonCommandEnum) {
         feignClientInterface.savePersonGender(chatId, buttonCommandEnum.name());
@@ -34,30 +34,36 @@ public class DbService {
     }
 
     public void savePersonOrientation(long chatId, ButtonCommandEnum buttonCommandEnum) {
-        //TODO
-        Orientation orientation;
-        //Сохраняем в БД параметр поиска (Енум параметр)
         feignClientInterface.savePersonOrientation(chatId, buttonCommandEnum.name());
     }
 
     public boolean haveName(long chatId) {
-        //TODO лезем в БД по чат айди, смотрим сохранено ли имя в Бд с этим чат айди.
-//        return feignClientInterface.havePersonName(chatId);
-        return true;
+        return feignClientInterface.havePersonName(chatId);
     }
 
     public SendPhoto getAccountPicture(long chatId) {
-//        File file = feignClientInterface.getAccountPicture(chatId);
-        //TODO
-        /*
-        SendPhoto sendPhoto = new SendPhoto();
-        sendPhoto.setPhoto(new InputFile(file));
-         */
+        File accountPicture = feignClientInterface.getAccountPicture(chatId);
         InputFile inputFile = new InputFile();
-        inputFile.setMedia(getClass().getClassLoader().getResourceAsStream("picture.jpg"), "PHOTOCHKA");
+        inputFile.setMedia(accountPicture);
         SendPhoto sendPhoto = new SendPhoto();
         sendPhoto.setChatId(chatId);
         sendPhoto.setPhoto(inputFile);
         return sendPhoto;
+    }
+
+    public boolean haveAge(long chatId) {
+        return feignClientInterface.haveAge(chatId);
+    }
+
+    public boolean haveHeader(long chatId) {
+        return feignClientInterface.haveHeader(chatId);
+    }
+
+    public void savePersonAge(int textCommand, long chatId) {
+        feignClientInterface.savePersonAge(chatId, textCommand);
+    }
+
+    public void savePersonHeader(String textCommand, long chatId) {
+        feignClientInterface.savePersonHeader(chatId, textCommand);
     }
 }

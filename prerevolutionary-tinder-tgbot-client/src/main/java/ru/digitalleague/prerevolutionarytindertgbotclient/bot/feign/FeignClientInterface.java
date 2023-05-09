@@ -29,6 +29,18 @@ public interface FeignClientInterface {
     @RequestMapping(method = RequestMethod.GET, value = "/have-person-name/{chatId}/")
     boolean havePersonName(@RequestParam("chatId") Long chatId);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/save-person-search-param/{chatId}/{orientation}")
+    @RequestMapping(method = RequestMethod.GET, value = "/save-person-orientation/{chatId}/{orientation}")
     void savePersonOrientation(@RequestParam("chatId") Long chatId, @RequestParam("orientation") String orientation);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/save-person-age/{chatId}")
+    boolean haveAge(@RequestParam("chatId") Long chatId);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/save-person-header/{chatId}")
+    boolean haveHeader(@RequestParam("chatId") Long chatId);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/save-person-age/{chatId}/{age}")
+    void savePersonAge(@RequestParam("chatId") Long chatId, @RequestParam("age") Integer age);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/save-person-header/{chatId}/{header}")
+    void savePersonHeader(@RequestParam("chatId") Long chatId, @RequestParam("header") String header);
 }
