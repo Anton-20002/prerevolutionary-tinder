@@ -74,7 +74,7 @@ public class PersonService {
         personDto.setAge(person.getAge());
         personDto.setHeader(person.getHeader());
         personDto.setDescription(person.getDescription());
-        byte[] imageFile = imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
+        List<Byte> imageFile = imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
         personDto.setImageFile(imageFile);
         return personDto;
     }
@@ -105,7 +105,7 @@ public class PersonService {
         favoritePersonDto.setAge(person.getAge());
         favoritePersonDto.setHeader(person.getHeader());
         favoritePersonDto.setDescription(person.getDescription());
-        byte[] imageFile = imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
+        List<Byte>  imageFile = imageService.createImage(person.getId(), person.getHeader(), person.getAge().toString(), person.getDescription());
         favoritePersonDto.setImageFile(imageFile);
         favoritePersonDto.setRomanceStatus(getRomanceStatus(mainPersonId, person.getId()));
         return favoritePersonDto;
@@ -130,7 +130,7 @@ public class PersonService {
         }
     }
 
-    public byte[] getAccountPicture(Long chatId) {
+    public List<Byte> getAccountPicture(Long chatId) {
         log.info("Get account picture chatId {}", chatId);
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         Person person = personOptional.orElse(null);

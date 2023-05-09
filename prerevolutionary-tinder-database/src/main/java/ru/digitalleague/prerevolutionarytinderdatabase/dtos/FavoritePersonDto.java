@@ -6,6 +6,8 @@ import ru.digitalleague.prerevolutionarytinderdatabase.enums.Gender;
 import ru.digitalleague.prerevolutionarytinderdatabase.enums.Orientation;
 import ru.digitalleague.prerevolutionarytinderdatabase.enums.RomanceStatus;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class FavoritePersonDto {
@@ -16,6 +18,6 @@ public class FavoritePersonDto {
     private Integer age;
     private String header;
     private String description;
-    private byte[] imageFile;
+    private List<Byte> imageFile;
     private RomanceStatus romanceStatus;
 }

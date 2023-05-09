@@ -1,16 +1,19 @@
 package ru.digitalleague.prerevolutionarytinderserver.servicies;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class ImageService {
 
-    public byte[] createImage(Long id, String header, String age, String description) {
+    public List<Byte> createImage(Long id, String header, String age, String description) {
         BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
 
         Graphics graphics = bufferedImage.getGraphics();
@@ -29,7 +32,7 @@ public class ImageService {
             throw new RuntimeException(e);
         }
 
-        byte[] byteArray = bas.toByteArray();
+        List<Byte> byteArray =  Arrays.asList(ArrayUtils.toObject(bas.toByteArray()));
 
 //        InputStream inputStream = new ByteArrayInputStream(byteArray);
 //        BufferedImage image = null;

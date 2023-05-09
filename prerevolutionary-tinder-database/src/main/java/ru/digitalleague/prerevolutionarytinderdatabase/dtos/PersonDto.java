@@ -5,6 +5,8 @@ import lombok.Setter;
 import ru.digitalleague.prerevolutionarytinderdatabase.enums.Gender;
 import ru.digitalleague.prerevolutionarytinderdatabase.enums.Orientation;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class PersonDto {
@@ -15,5 +17,5 @@ public class PersonDto {
     private Integer age;
     private String header;
     private String description;
-    private byte[] imageFile;
+    private List<Byte> imageFile;
 }

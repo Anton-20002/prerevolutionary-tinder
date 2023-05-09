@@ -63,16 +63,16 @@ class PrerevolutionaryTinderServerApplicationTests {
 		Person person = new Person();
 		person.setId(1L);
 		when(personRepository.findByChatId(chatId)).thenReturn(Optional.of(person));
-		byte[] imageFile = personService.getAccountPicture(chatId);
-		Assert.assertFalse(imageFile == null);
+		List<Byte>  imageFile = personService.getAccountPicture(chatId);
+		Assert.assertFalse(imageFile.isEmpty());
 	}
 
 	@Test
 	void getAccountPictureByChatId_shouldReturnTrue() {
 		Long chatId = 00000L;
 		when(personRepository.findByChatId(chatId)).thenReturn(Optional.empty());
-		byte[] imageFile = personService.getAccountPicture(chatId);
-		Assert.assertTrue(imageFile == null);
+		List<Byte> imageFile = personService.getAccountPicture(chatId);
+		Assert.assertTrue(imageFile.isEmpty());
 	}
 
 	@Test

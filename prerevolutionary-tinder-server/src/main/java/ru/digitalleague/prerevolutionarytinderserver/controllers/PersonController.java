@@ -33,7 +33,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/get-account-picture/{chatId}")
-    public @ResponseBody byte[] getAccountPicture(@RequestParam("chatId") Long chatId) {
+    public @ResponseBody List<Byte> getAccountPicture(@RequestParam("chatId") Long chatId) {
         return personService.getAccountPicture(chatId);
     }
 
