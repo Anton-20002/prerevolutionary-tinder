@@ -46,12 +46,12 @@ public class PersonService {
         return personOptional.isPresent();
     }
 
-    public List<PersonDto> getDatingProfilesByChatId(Long chatId) {
+    public PersonDto getDatingProfilesByChatId(Long chatId) {
         log.info("Get dating profiles by chatId {}", chatId);
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         Person mainPerson = personOptional.orElse(null);
 
-        if (mainPerson == null) return new ArrayList<>();
+        if (mainPerson == null) return null;
 
         List<Person> favoriteDatingProfiles = personRepository.getFavoriteDatingProfilesByPersonId(mainPerson.getId());
         List<Person> anotherDatingProfiles = personRepository.getAnotherDatingProfilesByPersonId(mainPerson.getId(), mainPerson.getOrientation().getPartnersGenders(), mainPerson.getGender().getPartnersOrientations());
@@ -61,7 +61,7 @@ public class PersonService {
                 .map(person -> mapPersonOnPersonDto(person))
                 .collect(Collectors.toList());
 
-        return resultDatingProfiles;
+        return resultDatingProfiles.get(0);
     }
 
     private PersonDto mapPersonOnPersonDto(Person person) {

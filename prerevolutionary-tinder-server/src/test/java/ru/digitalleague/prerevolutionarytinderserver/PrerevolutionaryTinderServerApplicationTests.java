@@ -45,16 +45,16 @@ class PrerevolutionaryTinderServerApplicationTests {
 	void getDatingProfilesByChatId_shouldReturnFalse() {
 		Long chatId = 11111L;
 		when(personRepository.findByChatId(chatId)).thenReturn(Optional.of(new Person()));
-		List<PersonDto> datingProfilesByChatId = personService.getDatingProfilesByChatId(chatId);
-		Assert.assertFalse(datingProfilesByChatId.isEmpty());
+		PersonDto datingProfilesByChatId = personService.getDatingProfilesByChatId(chatId);
+		Assert.assertFalse(datingProfilesByChatId == null);
 	}
 
 	@Test
 	void getDatingProfilesByChatId_shouldReturnTrue() {
 		Long chatId = 00000L;
 		when(personRepository.findByChatId(chatId)).thenReturn(Optional.empty());
-		List<PersonDto> datingProfilesByChatId = personService.getDatingProfilesByChatId(chatId);
-		Assert.assertTrue(datingProfilesByChatId.isEmpty());
+		PersonDto datingProfilesByChatId = personService.getDatingProfilesByChatId(chatId);
+		Assert.assertTrue(datingProfilesByChatId == null);
 	}
 
 	@Test
