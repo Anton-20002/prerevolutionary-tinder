@@ -25,7 +25,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/get-dating-profiles-by-chat-id/{chatId}")
-    public Optional<PersonDto> getDatingProfilesByChatId(@PathVariable("chatId") Long chatId) {
+    public PersonDto getDatingProfilesByChatId(@PathVariable("chatId") Long chatId) {
         return personService.getDatingProfilesByChatId(chatId);
     }
 

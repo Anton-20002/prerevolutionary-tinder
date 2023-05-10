@@ -46,12 +46,12 @@ public class PersonService {
         return personOptional.isPresent();
     }
 
-    public Optional<PersonDto> getDatingProfilesByChatId(Long chatId) {
+    public PersonDto getDatingProfilesByChatId(Long chatId) {
         log.info("Get dating profiles by chatId {}", chatId);
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         Person mainPerson = personOptional.orElse(null);
 
-        if (mainPerson == null) return Optional.of(null);
+        if (mainPerson == null) return null;
 
         List<Person> favoriteDatingProfiles = personRepository.getFavoriteDatingProfilesByPersonId(mainPerson.getId());
         List<Person> anotherDatingProfiles = personRepository.getAnotherDatingProfilesByPersonId(mainPerson.getId(), mainPerson.getOrientation().getPartnersGenders(), mainPerson.getGender().getPartnersOrientations());
@@ -61,14 +61,15 @@ public class PersonService {
                 .map(person -> mapPersonOnPersonDto(person))
                 .collect(Collectors.toList());
 
-        if (resultDatingProfiles.isEmpty()) return Optional.of(null);
+        if (resultDatingProfiles.isEmpty()) return new PersonDto();
 
-        return Optional.of(resultDatingProfiles.get(0));
+        return resultDatingProfiles.get(0);
     }
 
     private PersonDto mapPersonOnPersonDto(Person person) {
         log.debug("Mapping person on personDto personId {}", person.getId());
         PersonDto personDto = new PersonDto();
+        personDto.setIsEmpty(false);
         personDto.setId(person.getId());
         personDto.setNickname(person.getNickname());
         personDto.setGender(person.getGender());

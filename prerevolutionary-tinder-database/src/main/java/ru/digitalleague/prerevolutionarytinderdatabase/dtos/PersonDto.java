@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 public class PersonDto {
+    private Boolean isEmpty = true;
     private Long id;
     private String nickname;
     private Gender gender;
