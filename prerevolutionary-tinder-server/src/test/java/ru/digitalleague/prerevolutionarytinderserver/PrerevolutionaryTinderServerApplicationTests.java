@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
 import ru.digitalleague.prerevolutionarytinderdatabase.entities.Person;
@@ -11,8 +12,16 @@ import ru.digitalleague.prerevolutionarytinderdatabase.enums.Gender;
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.BlackListRepository;
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.FavoriteListRepository;
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.PersonRepository;
+import ru.digitalleague.prerevolutionarytinderserver.servicies.ImageService;
 import ru.digitalleague.prerevolutionarytinderserver.servicies.PersonService;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +40,9 @@ class PrerevolutionaryTinderServerApplicationTests {
 	@InjectMocks
 	PersonService personService;
 
+	@Autowired
+	ImageService imageService;
+
 	@Test
 	void isRegisteredPersonByChatId_shouldReturnFalse() {
 		Long chatId = 00000L;
@@ -41,16 +53,16 @@ class PrerevolutionaryTinderServerApplicationTests {
 	void getDatingProfilesByChatId_shouldReturnFalse() {
 		Long chatId = 11111L;
 		when(personRepository.findByChatId(chatId)).thenReturn(Optional.of(new Person()));
-		PersonDto datingProfilesByChatId = personService.getDatingProfilesByChatId(chatId);
-		Assert.assertFalse(datingProfilesByChatId == null);
+		Optional<PersonDto> datingProfilesByChatId = personService.getDatingProfilesByChatId(chatId);
+		Assert.assertFalse(datingProfilesByChatId.isEmpty());
 	}
 
 	@Test
 	void getDatingProfilesByChatId_shouldReturnTrue() {
 		Long chatId = 00000L;
 		when(personRepository.findByChatId(chatId)).thenReturn(Optional.empty());
-		PersonDto datingProfilesByChatId = personService.getDatingProfilesByChatId(chatId);
-		Assert.assertTrue(datingProfilesByChatId == null);
+		Optional<PersonDto> datingProfilesByChatId = personService.getDatingProfilesByChatId(chatId);
+		Assert.assertTrue(datingProfilesByChatId.isEmpty());
 	}
 
 	@Test
@@ -153,5 +165,31 @@ class PrerevolutionaryTinderServerApplicationTests {
 		String orientation = "ALL";
 		when(personRepository.findByChatId(chatId)).thenReturn(Optional.empty());
 		Assert.assertFalse(personService.savePersonOrientation(chatId, orientation));
+	}
+
+	@Test
+	void createImage_shouldReturnTrue() {
+		Long id = 00000l;
+		List<Byte> byteList = imageService.createImage(id, "Некто Александр", "35", "Если вы – женщина, вас выбирают. Даже тогда, когда выбираете вы. Как выбирают? Без премудростей. Сначала – лицо и фигура. Потом – богатый духовный мир. Правда, даже фееричное портфолио не спасет анкету, которая «не зацепила» или оставила неприятное послевкусие.");
+		byte[] byteArray = new byte[byteList.size()];
+		for (int i = 0; i < byteList.size(); i++) {
+			byteArray[i] = byteList.get(i);
+		}
+		InputStream inputStream = new ByteArrayInputStream(byteArray);
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(inputStream);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		File outputfile = new File("info" + id.toString() + ".png");
+
+		try {
+			ImageIO.write(image, "png", outputfile);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+//		Assert.assertFalse();
 	}
 }

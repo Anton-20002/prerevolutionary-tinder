@@ -6,9 +6,11 @@ import ru.digitalleague.prerevolutionarytinderdatabase.dtos.FavoritePersonDto;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
 import ru.digitalleague.prerevolutionarytinderserver.servicies.PersonService;
 
+import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/person-controller")
@@ -23,7 +25,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/get-dating-profiles-by-chat-id/{chatId}")
-    public PersonDto getDatingProfilesByChatId(@PathVariable("chatId") Long chatId) {
+    public Optional<PersonDto> getDatingProfilesByChatId(@PathVariable("chatId") Long chatId) {
         return personService.getDatingProfilesByChatId(chatId);
     }
 
