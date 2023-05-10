@@ -4,7 +4,6 @@ import junit.framework.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
 import ru.digitalleague.prerevolutionarytinderdatabase.entities.Person;
@@ -12,11 +11,8 @@ import ru.digitalleague.prerevolutionarytinderdatabase.enums.Gender;
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.BlackListRepository;
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.FavoriteListRepository;
 import ru.digitalleague.prerevolutionarytinderdatabase.repositories.PersonRepository;
-import ru.digitalleague.prerevolutionarytinderserver.servicies.ImageService;
 import ru.digitalleague.prerevolutionarytinderserver.servicies.PersonService;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
