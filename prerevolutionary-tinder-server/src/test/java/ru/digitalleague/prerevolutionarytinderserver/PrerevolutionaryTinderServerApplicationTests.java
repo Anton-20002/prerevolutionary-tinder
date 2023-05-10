@@ -170,7 +170,7 @@ class PrerevolutionaryTinderServerApplicationTests {
 	@Test
 	void createImage_shouldReturnTrue() {
 		Long id = 00000l;
-		List<Byte> byteList = imageService.createImage(id, "Некто Александр", "35", "Если вы – женщина, вас выбирают. Даже тогда, когда выбираете вы. Как выбирают? Без премудростей. Сначала – лицо и фигура. Потом – богатый духовный мир. Правда, даже фееричное портфолио не спасет анкету, которая «не зацепила» или оставила неприятное послевкусие.");
+		List<Byte> byteList = imageService.createImage(id, "Некто Ф Александр ф", "35", "Если вы – женщина, вас выбирают. Даже тогда, когда выбираете вы. Как выбирают? Без премудростей. Сначала – лицо и фигура. Потом – богатый духовный мир. Правда, даже фееричное портфолио не спасет анкету, которая «не зацепила» или оставила неприятное послевкусие.");
 		byte[] byteArray = new byte[byteList.size()];
 		for (int i = 0; i < byteList.size(); i++) {
 			byteArray[i] = byteList.get(i);
