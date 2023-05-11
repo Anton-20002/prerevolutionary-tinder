@@ -13,4 +13,8 @@ import java.util.Optional;
 @Repository
 public interface FavoriteListRepository extends JpaRepository<FavoriteList, Long> {
     public Optional<FavoriteList> findByPersonIdAndFavoritePersonId(Long personId, Long favoritePersonId);
+
+    @Modifying
+    @Query(value = "SELECT EXISTS (SELECT * FROM tinder.favoritelist WHERE person_id = ?1 AND favorite_person_id = ?2)", nativeQuery = true)
+    public boolean containsByPersonIdAndFavoritePersonId(Long personId, Long favoritePersonId);
 }

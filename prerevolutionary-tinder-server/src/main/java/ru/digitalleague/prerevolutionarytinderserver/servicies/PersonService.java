@@ -253,11 +253,13 @@ public class PersonService {
 
         if (person == null) return false;
 
-        BlackList blackList = new BlackList();
-        blackList.setPersonId(person.getId());
-        blackList.setBannedPersonId(bannedPersonId);
+        if (!blackListRepository.containsByPersonIdAndBannedPersonId(person.getId(), bannedPersonId)) {
+            BlackList blackList = new BlackList();
+            blackList.setPersonId(person.getId());
+            blackList.setBannedPersonId(bannedPersonId);
+            blackListRepository.save(blackList);
+        }
 
-        blackListRepository.save(blackList);
         return true;
     }
 
@@ -268,12 +270,14 @@ public class PersonService {
 
         if (person == null) return false;
 
-        FavoriteList favoriteList = new FavoriteList();
-        favoriteList.setPersonId(person.getId());
-        favoriteList.setFavoritePersonId(favoritePersonId);
-        favoriteList.setRomanceStatus(getRomanceStatusAndUpdate(person.getId(), favoritePersonId));
+        if (!favoriteListRepository.containsByPersonIdAndFavoritePersonId(person.getId(), favoritePersonId)) {
+            FavoriteList favoriteList = new FavoriteList();
+            favoriteList.setPersonId(person.getId());
+            favoriteList.setFavoritePersonId(favoritePersonId);
+            favoriteList.setRomanceStatus(getRomanceStatusAndUpdate(person.getId(), favoritePersonId));
+            favoriteListRepository.save(favoriteList);
+        }
 
-        favoriteListRepository.save(favoriteList);
         return true;
 
 
