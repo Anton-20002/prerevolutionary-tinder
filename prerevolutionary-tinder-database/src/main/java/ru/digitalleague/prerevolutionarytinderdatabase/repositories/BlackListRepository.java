@@ -9,7 +9,6 @@ import ru.digitalleague.prerevolutionarytinderdatabase.entities.BlackList;
 @Repository
 public interface BlackListRepository extends JpaRepository<BlackList, Long> {
 
-    @Modifying
     @Query(value = "SELECT EXISTS (SELECT * FROM tinder.blacklist WHERE person_id = ?1 AND banned_person_id = ?2)", nativeQuery = true)
     public boolean containsByPersonIdAndBannedPersonId(Long personId, Long bannedPersonId);
 }
