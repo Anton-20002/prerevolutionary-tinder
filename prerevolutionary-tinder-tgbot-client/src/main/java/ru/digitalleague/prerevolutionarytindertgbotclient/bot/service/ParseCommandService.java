@@ -4,9 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import ru.digitalleague.prerevolutionarytinderdatabase.dtos.FavoritePersonDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.entity.ImageMessageDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.BotCommandEnum;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -23,6 +27,12 @@ public class ParseCommandService {
 
     @Autowired
     private PictureService pictureService;
+
+    @Autowired
+    private AccountService searchService;
+
+    @Autowired
+    private FavoritesService favoritesService;
 
     public SendMessage parseCommand(String textCommand, long chatId) {
         log.info("Parse command");
@@ -46,11 +56,24 @@ public class ParseCommandService {
         return sendMessage;
     }
 
-    public ImageMessageDto parseButtonCommand(String data, long chatId) {
+    //Также переделать на лист.8
+    public List<ImageMessageDto> parseButtonCommand(String data, long chatId) {
         log.info("Parse button command");
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
-        ButtonCommandEnum buttonCommandEnum = ButtonCommandEnum.valueOf(data.toUpperCase().substring(1));
+        long likedOrDislikedId = 0;
+        ButtonCommandEnum buttonCommandEnum;
+
+        if (isDislikeCommand(data)){
+             buttonCommandEnum = ButtonCommandEnum.DISLIKE;
+            likedOrDislikedId = Long.parseLong(data.toUpperCase().substring(1).replace("dislike", ""));
+        } else if (isLikeCommand(data)) {
+            buttonCommandEnum = ButtonCommandEnum.LIKE;
+            likedOrDislikedId = Long.parseLong(data.toUpperCase().substring(1).replace("like", ""));
+        } else {
+             buttonCommandEnum = ButtonCommandEnum.valueOf(data.toUpperCase().substring(1));
+        }
+        List<ImageMessageDto> imageMessageDtoList = new ArrayList<>();
         ImageMessageDto imageMessageDto = new ImageMessageDto();
 
         if (buttonCommandEnum.equals(ButtonCommandEnum.MALE) || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE)) {
@@ -63,10 +86,29 @@ public class ParseCommandService {
         } else if (buttonCommandEnum.equals(ButtonCommandEnum.ACCOUNT)){
             imageMessageDto.setSendPhoto(pictureService.getPicture(chatId));
             sendMessage = buttonService.getMenuButtons(chatId);
+        } else if (buttonCommandEnum.equals(ButtonCommandEnum.SEARCH)){
+            imageMessageDtoList.add(searchService.searchAccount(chatId));
+            return imageMessageDtoList;
+        } else if (buttonCommandEnum.equals(ButtonCommandEnum.LIKE) || buttonCommandEnum.equals(ButtonCommandEnum.DISLIKE)){
+            dbService.setReactionToAccount(buttonCommandEnum, chatId, likedOrDislikedId);
+            imageMessageDtoList.add(searchService.searchAccount(chatId));
+            return imageMessageDtoList;
+        } else if (buttonCommandEnum.equals(ButtonCommandEnum.FAVORITES)){
+            imageMessageDtoList = favoritesService.getFavorites(chatId);
+            sendMessage = buttonService.getMenuButtons(chatId);
         }
         imageMessageDto.setSendMessage(sendMessage);
+        imageMessageDtoList.add(imageMessageDto);
 
-        return imageMessageDto;
+        return imageMessageDtoList;
+    }
+
+    private boolean isLikeCommand(String command){
+        return command.contains("like");
+    }
+
+    private boolean isDislikeCommand(String command){
+        return command.contains("dislike");
     }
 
     public SendMessage parseInputText(String textCommand, long chatId) {
@@ -116,6 +158,6 @@ public class ParseCommandService {
     private SendMessage parseAboutPerson(String textCommand, long chatId) {
         log.info("Parse about person command");
         dbService.saveAboutPersonInformation(textCommand, chatId);
-        return buttonService.getButtonByCommand(ButtonCommandEnum.ABOUT, chatId);
+        return buttonService.getButtonByCommand(ButtonCommandEnum.ABOUT, chatId, 0);
     }
 }

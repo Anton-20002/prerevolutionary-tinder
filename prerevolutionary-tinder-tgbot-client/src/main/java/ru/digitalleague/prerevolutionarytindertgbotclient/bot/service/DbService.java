@@ -3,10 +3,13 @@ package ru.digitalleague.prerevolutionarytindertgbotclient.bot.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.digitalleague.prerevolutionarytinderdatabase.dtos.FavoritePersonDto;
+import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.feign.FeignClientInterface;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -57,5 +60,21 @@ public class DbService {
 
     public void savePersonHeader(String textCommand, long chatId) {
         feignClientInterface.savePersonHeader(chatId, textCommand);
+    }
+
+    public PersonDto searchAccount(long chatId){
+        return feignClientInterface.searchAccount(chatId);
+    }
+
+    public void setReactionToAccount(ButtonCommandEnum reaction, long chatId, long personId){
+        if (reaction.equals(ButtonCommandEnum.LIKE)){
+            feignClientInterface.addPersonToFavoritelist(chatId, personId);
+        } else {
+            feignClientInterface.addPersonToBlacklist(chatId, personId);
+        }
+    }
+
+    public List<FavoritePersonDto> getFavoritesByChatId(long chatId){
+        return feignClientInterface.getFavoritesProfilesByChatId(chatId);
     }
 }

@@ -65,7 +65,7 @@ public class ButtonService {
         return sendMessage;
     }
 
-    public SendMessage getButtonByCommand(ButtonCommandEnum buttonCommandEnum, long chatId) {
+    public SendMessage getButtonByCommand(ButtonCommandEnum buttonCommandEnum, long chatId, long id) {
 
         switch (buttonCommandEnum) {
             case ABOUT -> {
@@ -76,6 +76,16 @@ public class ButtonService {
 
                 SendMessage sendMessage = createKeyboardButtons(paramMap);
                 sendMessage.setText(messageService.getMessage("bot.command.search.whoareyou"));
+                sendMessage.setChatId(chatId);
+                return sendMessage;
+            }
+            case SEARCH -> {
+                Map<String, String> paramMap = new HashMap<>();
+                paramMap.put(messageService.getMessage("bot.command.search_menu.like.description") + id,messageService.getMessage("bot.command.search_menu.like.name"));
+                paramMap.put(messageService.getMessage("bot.command.search_menu.dislike.description") + id,messageService.getMessage("bot.command.search_menu.dislike.name"));
+
+                SendMessage sendMessage = createKeyboardButtons(paramMap);
+                sendMessage.setText(messageService.getMessage("bot.command.search_menu.reaction"));
                 sendMessage.setChatId(chatId);
                 return sendMessage;
             }

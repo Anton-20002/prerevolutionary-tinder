@@ -34,7 +34,27 @@ public enum ButtonCommandEnum {
     },
     ACCOUNT {
         public String getDescription() {
-            return "/sudarinya_search";
+            return "/account";
+        }
+    },
+    SEARCH {
+        public String getDescription() {
+            return "/search";
+        }
+    },
+    LIKE {
+        public String getDescription() {
+            return "/like";
+        }
+    },
+    DISLIKE {
+        public String getDescription() {
+            return "/dislike";
+        }
+    },
+    FAVORITES {
+        public String getDescription() {
+            return "/favorites";
         }
     };
 

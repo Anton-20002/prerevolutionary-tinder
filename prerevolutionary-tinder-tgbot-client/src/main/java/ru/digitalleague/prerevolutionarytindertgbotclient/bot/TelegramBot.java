@@ -17,6 +17,7 @@ import ru.digitalleague.prerevolutionarytindertgbotclient.bot.service.MessageSer
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.service.ParseCommandService;
 import ru.digitalleague.prerevolutionarytindertgbotclient.config.BotConfiguration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -58,19 +59,21 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        //TODO
         SendMessage sendMessage = new SendMessage();
         SendPhoto sendPhoto = null;
-        ImageMessageDto imageMessageDto = null;
+        List<ImageMessageDto> imageMessageDtoList = null;
 
         if (update.getMessage() == null && update.getCallbackQuery() == null) {
             sendMessage.setChatId(update.getMessage().getChatId());
             sendMessage.setText(messageService.getMessage("message.bot.command.emptyCommand"));
         } else {
-            imageMessageDto = directionMessage(update, sendMessage, sendPhoto);
+            imageMessageDtoList = directionMessage(update, sendMessage, sendPhoto);
         }
-        assert imageMessageDto != null;
-        sendMessage(imageMessageDto.getSendMessage(), imageMessageDto.getSendPhoto());
+        assert imageMessageDtoList != null;
+
+        for (ImageMessageDto dto : imageMessageDtoList){
+            sendMessage(dto.getSendMessage(), dto.getSendPhoto());
+        }
     }
 
     private void sendMessage(SendMessage sendMessage, SendPhoto sendPhoto) {
@@ -89,17 +92,21 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private ImageMessageDto directionMessage(Update update, SendMessage sendMessage, SendPhoto sendPhoto) {
+    //переделать на листо ДТОХ
+    private List<ImageMessageDto> directionMessage(Update update, SendMessage sendMessage, SendPhoto sendPhoto) {
         ImageMessageDto imageMessageDto = new ImageMessageDto();
+        List<ImageMessageDto> imageMessageDtoList = new ArrayList<>();
         if (update.getMessage() != null && update.getMessage().getText().startsWith("/")) {
             sendMessage = parseCommandService.parseCommand(update.getMessage().getText(), update.getMessage().getChatId());
             imageMessageDto.setSendMessage(sendMessage);
+            imageMessageDtoList.add(imageMessageDto);
         } else if (update.hasCallbackQuery()) {
-            imageMessageDto = parseCommandService.parseButtonCommand(update.getCallbackQuery().getData(), update.getCallbackQuery().getMessage().getChatId());
+            imageMessageDtoList = parseCommandService.parseButtonCommand(update.getCallbackQuery().getData(), update.getCallbackQuery().getMessage().getChatId());
         } else if (update.getMessage() != null && update.getMessage().getText() != null) {
             sendMessage = parseCommandService.parseInputText(update.getMessage().getText(), update.getMessage().getChatId());
             imageMessageDto.setSendMessage(sendMessage);
+            imageMessageDtoList.add(imageMessageDto);
         }
-        return imageMessageDto;
+        return imageMessageDtoList;
     }
 }

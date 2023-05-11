@@ -1,6 +1,7 @@
 package ru.digitalleague.prerevolutionarytindertgbotclient.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -23,9 +24,24 @@ public class PictureService {
 
     public SendPhoto getPicture(long chatId) {
         List<Byte> accountPictureByteArray = dbService.getAccountPicture(chatId);
-        byte[] bytes = new byte[accountPictureByteArray.size()];
-        for (int i = 0; i < accountPictureByteArray.size(); i++) {
-            bytes[i] = accountPictureByteArray.get(i);
+        File picture = createPicture(chatId, accountPictureByteArray);
+
+        return getSendPhoto(chatId, picture);
+    }
+
+    public SendPhoto getSendPhoto(long chatId, File picture) {
+        InputFile inputFile = new InputFile();
+        inputFile.setMedia(picture);
+        SendPhoto sendPhoto = new SendPhoto();
+        sendPhoto.setChatId(chatId);
+        sendPhoto.setPhoto(inputFile);
+        return sendPhoto;
+    }
+
+    public File createPicture(long chatId, List<Byte> listBytes){
+        byte[] bytes = new byte[listBytes.size()];
+        for (int i = 0; i < listBytes.size(); i++) {
+            bytes[i] = listBytes.get(i);
         }
         InputStream inputStream = new ByteArrayInputStream(bytes);
 
@@ -43,13 +59,6 @@ public class PictureService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        InputFile inputFile = new InputFile();
-        inputFile.setMedia(outputfile);
-        SendPhoto sendPhoto = new SendPhoto();
-        sendPhoto.setChatId(chatId);
-        sendPhoto.setPhoto(inputFile);
-
-        return sendPhoto;
+        return outputfile;
     }
 }
