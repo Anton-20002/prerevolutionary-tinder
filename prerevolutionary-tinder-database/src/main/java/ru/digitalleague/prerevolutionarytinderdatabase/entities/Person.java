@@ -41,18 +41,4 @@ public class Person {
 
     @Column(name = "description")
     private String description;
-
-    @ManyToMany
-    @JoinTable(
-            name = "blacklist",
-            joinColumns = @JoinColumn(name = "person_id"),
-            inverseJoinColumns = @JoinColumn(name = "banned_person_id"))
-    private List<Person> blacklist;
-
-    @ManyToMany
-    @JoinTable(
-            name = "favoritelist",
-            joinColumns = @JoinColumn(name = "person_id"),
-            inverseJoinColumns = @JoinColumn(name = "favorite_person_id"))
-    private List<Person> favorites;
 }
