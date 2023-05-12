@@ -251,9 +251,10 @@ public class PersonService {
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         Person person = personOptional.orElse(null);
 
-        if (person == null) return false;
+//        if (person == null) return false;
 
-        if (!blackListRepository.containsByPersonIdAndBannedPersonId(person.getId(), bannedPersonId)) {
+        if (!blackListRepository.containsByPersonIdAndBannedPersonId(person.getId(), bannedPersonId)
+         && !favoriteListRepository.containsByPersonIdAndFavoritePersonId(person.getId(), bannedPersonId)) {
             BlackList blackList = new BlackList();
             blackList.setPersonId(person.getId());
             blackList.setBannedPersonId(bannedPersonId);
@@ -268,9 +269,10 @@ public class PersonService {
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         Person person = personOptional.orElse(null);
 
-        if (person == null) return false;
+//        if (person == null) return false;
 
-        if (!favoriteListRepository.containsByPersonIdAndFavoritePersonId(person.getId(), favoritePersonId)) {
+        if (!favoriteListRepository.containsByPersonIdAndFavoritePersonId(person.getId(), favoritePersonId)
+         && !blackListRepository.containsByPersonIdAndBannedPersonId(person.getId(), favoritePersonId)) {
             FavoriteList favoriteList = new FavoriteList();
             favoriteList.setPersonId(person.getId());
             favoriteList.setFavoritePersonId(favoritePersonId);
