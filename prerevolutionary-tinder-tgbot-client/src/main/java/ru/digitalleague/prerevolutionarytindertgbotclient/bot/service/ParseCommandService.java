@@ -66,10 +66,10 @@ public class ParseCommandService {
 
         if (isDislikeCommand(data)){
              buttonCommandEnum = ButtonCommandEnum.DISLIKE;
-            likedOrDislikedId = Long.parseLong(data.toUpperCase().substring(1).replace("dislike", ""));
+            likedOrDislikedId = Long.parseLong(data.toUpperCase().substring(1).replace("DISLIKE", ""));
         } else if (isLikeCommand(data)) {
             buttonCommandEnum = ButtonCommandEnum.LIKE;
-            likedOrDislikedId = Long.parseLong(data.toUpperCase().substring(1).replace("like", ""));
+            likedOrDislikedId = Long.parseLong(data.toUpperCase().substring(1).replace("LIKE", ""));
         } else {
              buttonCommandEnum = ButtonCommandEnum.valueOf(data.toUpperCase().substring(1));
         }
