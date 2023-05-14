@@ -482,12 +482,26 @@ public class ImageService {
     }
 
     private String translateDescription(String description) {
+        
+        /**
+        Почему привязываетесь к конкретным словам?
+        
+        */
         for (String word : W_O_R_D_S) {
             description = description.replaceAll(word, word.replace("е", "ѣ"));
         }
+        
+        /**
+        
+        Почему нельзя проверять окончание слов на гласные 
+        */
         for (String wordEnding : wordEndings) {
             description = description.replaceAll(wordEnding, wordEnding.substring(0, 1) + "ъ ");
         }
+                /**
+        
+        Почему нельзя проверять окончание слов на И + гласная
+        */
         for (String iVowel : iVowels) {
             description = description.replaceAll(iVowel, "i" + iVowel.substring(1, 2));
         }
@@ -495,6 +509,11 @@ public class ImageService {
         return description;
     }
 
+    /**
+    Ничего не понятно
+    ?????
+    
+    */
     private static List<String> getDescriptionList(String description) {
         List<String> descriptions = new ArrayList<>();
         while (description.length() > STRING_SIZE) {
