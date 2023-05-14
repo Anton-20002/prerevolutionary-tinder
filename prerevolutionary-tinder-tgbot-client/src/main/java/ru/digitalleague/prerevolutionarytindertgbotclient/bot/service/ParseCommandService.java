@@ -63,17 +63,7 @@ public class ParseCommandService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         long likedOrDislikedId = 0;
-        ButtonCommandEnum buttonCommandEnum;
-
-        if (isDislikeCommand(data)){
-             buttonCommandEnum = ButtonCommandEnum.DISLIKE;
-            likedOrDislikedId = Long.parseLong(data.toUpperCase().substring(1).replace("DISLIKE", ""));
-        } else if (isLikeCommand(data)) {
-            buttonCommandEnum = ButtonCommandEnum.LIKE;
-            likedOrDislikedId = Long.parseLong(data.toUpperCase().substring(1).replace("LIKE", ""));
-        } else {
-             buttonCommandEnum = ButtonCommandEnum.valueOf(data.toUpperCase().substring(1));
-        }
+        ButtonCommandEnum buttonCommandEnum = createButtonCommandEnum(data);
         List<ImageMessageDto> imageMessageDtoList = new ArrayList<>();
         ImageMessageDto imageMessageDto = new ImageMessageDto();
 
@@ -94,6 +84,7 @@ public class ParseCommandService {
             imageMessageDtoList.add(searchService.searchAccount(chatId));
             return imageMessageDtoList;
         } else if (buttonCommandEnum.equals(ButtonCommandEnum.LIKE) || buttonCommandEnum.equals(ButtonCommandEnum.DISLIKE)){
+            likedOrDislikedId = parseLikedOrDislikedId(data, buttonCommandEnum.name());
             dbService.setReactionToAccount(buttonCommandEnum, chatId, likedOrDislikedId);
             imageMessageDtoList.add(searchService.searchAccount(chatId));
             return imageMessageDtoList;
@@ -105,6 +96,23 @@ public class ParseCommandService {
         imageMessageDtoList.add(imageMessageDto);
 
         return imageMessageDtoList;
+    }
+
+    private ButtonCommandEnum createButtonCommandEnum(String data){
+        ButtonCommandEnum buttonCommandEnum;
+
+        if (isDislikeCommand(data)){
+            buttonCommandEnum = ButtonCommandEnum.DISLIKE;
+        } else if (isLikeCommand(data)) {
+            buttonCommandEnum = ButtonCommandEnum.LIKE;
+        } else {
+            buttonCommandEnum = ButtonCommandEnum.valueOf(data.toUpperCase().substring(1));
+        }
+        return buttonCommandEnum;
+    }
+
+    private long parseLikedOrDislikedId(String data, String replacer){
+        return Long.parseLong(data.toUpperCase().substring(1).replace(replacer, ""));
     }
 
     private boolean isLikeCommand(String command){
