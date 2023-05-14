@@ -32,6 +32,9 @@ public class PersonService {
     FavoriteListRepository favoriteListRepository;
     ImageService imageService;
 
+    /**
+    Person service лучше разбить на несколько сервисов
+    */
     @Autowired
     public PersonService(PersonRepository personRepository, BlackListRepository blackListRepository, FavoriteListRepository favoriteListRepository, ImageService imageService) {
         this.personRepository = personRepository;
@@ -66,6 +69,10 @@ public class PersonService {
         return resultDatingProfiles.get(0);
     }
 
+    /**
+    Лучше вынести в отдельные класс маппер
+    
+    */
     private PersonDto mapPersonOnPersonDto(Person person) {
         log.debug("Mapping person on personDto personId {}", person.getId());
         PersonDto personDto = new PersonDto();
@@ -98,6 +105,10 @@ public class PersonService {
         return favoritePersonDtos;
     }
 
+        /**
+    Лучше вынести в отдельные класс маппер
+    
+    */
     private FavoritePersonDto mapPersonOnFavoritePersonDto(Long mainPersonId, Person person) {
         log.debug("Mapping person on favoritePersonDto personId {}", person.getId());
         FavoritePersonDto favoritePersonDto = new FavoritePersonDto();
@@ -169,6 +180,9 @@ public class PersonService {
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         Person person = personOptional.orElse(null);
 
+        /**
+        Лучше бросать эксепшн
+        */
         if (person == null) return false;
 
         person.setDescription(aboutText);
@@ -180,6 +194,10 @@ public class PersonService {
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         Person person = personOptional.orElse(null);
 
+                /**
+        Лучше бросать эксепшн
+        */
+        
         if (person == null) {
             return false;
         }
@@ -194,6 +212,10 @@ public class PersonService {
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         Person person = personOptional.orElse(null);
 
+                /**
+        Лучше бросать эксепшн
+        */
+        
         if (person == null) return false;
 
         person.setOrientation(Orientation.valueOf(orientation));
@@ -205,6 +227,10 @@ public class PersonService {
         Optional<Person> personOptional = personRepository.findByChatId(chatId);
         Person person = personOptional.orElse(null);
 
+                /**
+        Лучше бросать эксепшн
+        */
+        
         if (person == null || person.getAge() == null) {
             return false;
         }
