@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.FavoritePersonDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.entity.ImageMessageDto;
+import ru.digitalleague.prerevolutionarytindertgbotclient.bot.feign.FeignService;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,13 +13,13 @@ import java.util.List;
 @Service
 public class FavoritesService {
 
-    private final DbService dbService;
+    private final FeignService dbService;
 
     private final PictureService pictureService;
 
     private final MessageService messageService;
 
-    public FavoritesService(DbService dbService, PictureService pictureService, MessageService messageService) {
+    public FavoritesService(FeignService dbService, PictureService pictureService, MessageService messageService) {
         this.dbService = dbService;
         this.pictureService = pictureService;
         this.messageService = messageService;

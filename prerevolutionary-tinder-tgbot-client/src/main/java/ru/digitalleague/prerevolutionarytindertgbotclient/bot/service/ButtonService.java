@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.BotCommandEnum;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
+import ru.digitalleague.prerevolutionarytindertgbotclient.bot.feign.FeignService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,11 +18,11 @@ import java.util.Map;
 @Service
 public class ButtonService {
 
-    private final DbService dbService;
+    private final FeignService dbService;
 
     private final MessageService messageService;
 
-    public ButtonService(DbService dbService, MessageService messageService) {
+    public ButtonService(FeignService dbService, MessageService messageService) {
         this.dbService = dbService;
         this.messageService = messageService;
     }

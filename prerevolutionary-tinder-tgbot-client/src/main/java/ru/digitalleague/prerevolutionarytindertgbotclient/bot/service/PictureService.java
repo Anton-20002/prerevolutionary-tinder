@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
+import ru.digitalleague.prerevolutionarytindertgbotclient.bot.feign.FeignService;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -17,9 +18,9 @@ import java.util.List;
 @Service
 public class PictureService {
 
-    private final DbService dbService;
+    private final FeignService dbService;
 
-    public PictureService(DbService dbService) {
+    public PictureService(FeignService dbService) {
         this.dbService = dbService;
     }
 

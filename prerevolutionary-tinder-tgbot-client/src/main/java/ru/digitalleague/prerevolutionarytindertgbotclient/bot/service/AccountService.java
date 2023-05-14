@@ -6,13 +6,14 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.entity.ImageMessageDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
+import ru.digitalleague.prerevolutionarytindertgbotclient.bot.feign.FeignService;
 
 import java.io.File;
 
 @Service
 public class AccountService {
 
-    private final DbService dbService;
+    private final FeignService dbService;
 
     private final ButtonService buttonService;
 
@@ -20,7 +21,7 @@ public class AccountService {
 
     private final MessageService messageService;
 
-    public AccountService(DbService dbService, ButtonService buttonService,
+    public AccountService(FeignService dbService, ButtonService buttonService,
                           PictureService pictureService, MessageService messageService) {
         this.dbService = dbService;
         this.buttonService = buttonService;

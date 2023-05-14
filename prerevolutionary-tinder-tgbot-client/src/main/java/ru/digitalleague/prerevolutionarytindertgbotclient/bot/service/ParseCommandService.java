@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.entity.ImageMessageDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.BotCommandEnum;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
+import ru.digitalleague.prerevolutionarytindertgbotclient.bot.feign.FeignService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class ParseCommandService {
 
     private final ButtonService buttonService;
 
-    private final DbService dbService;
+    private final FeignService dbService;
 
     private final MessageService messageService;
 
@@ -26,7 +27,7 @@ public class ParseCommandService {
 
     private final FavoritesService favoritesService;
 
-    public ParseCommandService(ButtonService buttonService, DbService dbService,
+    public ParseCommandService(ButtonService buttonService, FeignService dbService,
                                MessageService messageService, PictureService pictureService,
                                AccountService searchService, FavoritesService favoritesService) {
         this.buttonService = buttonService;
