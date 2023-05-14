@@ -39,10 +39,10 @@ public class FavoritesService {
             return imageMessageDtoList;
         }
 
-        for (int i = 0; i < favoritesList.size(); i++){
+        for (FavoritePersonDto favoritePersonDto : favoritesList) {
             sendMessage.setChatId(chatId);
-            sendMessage.setText(favoritesList.get(i).getRomanceStatus().getRussianName());
-            File picture = pictureService.createPicture(favoritesList.get(i).getId(), favoritesList.get(i).getImageFile());
+            sendMessage.setText(favoritePersonDto.getRomanceStatus().getRussianName());
+            File picture = pictureService.createPicture(favoritePersonDto.getId(), favoritePersonDto.getImageFile());
             imageMessageDto.setSendPhoto(pictureService.getSendPhoto(chatId, picture));
             imageMessageDto.setSendMessage(sendMessage);
             imageMessageDtoList.add(imageMessageDto);
