@@ -50,10 +50,8 @@ public class ParseCommandService {
                 break;
             }
             case HELP: {
-                sendMessage.setText("""
-                        Какая-то команда помощи
-                        Потом разберусь чего сюда писать
-                        """);
+                sendMessage.setText(messageService.getMessage("bot.command.help"));
+                sendMessage.setChatId(chatId);
                 break;
             }
         }
