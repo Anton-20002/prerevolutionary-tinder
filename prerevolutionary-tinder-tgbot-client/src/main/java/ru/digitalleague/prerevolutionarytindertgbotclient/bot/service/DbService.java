@@ -1,7 +1,6 @@
 package ru.digitalleague.prerevolutionarytindertgbotclient.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.FavoritePersonDto;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
@@ -9,14 +8,16 @@ import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonComman
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.feign.FeignClientInterface;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
 public class DbService {
 
-    @Autowired
-    private FeignClientInterface feignClientInterface;
+    private final FeignClientInterface feignClientInterface;
+
+    public DbService(FeignClientInterface feignClientInterface) {
+        this.feignClientInterface = feignClientInterface;
+    }
 
     public boolean isRegistered(long chatId) {
         return feignClientInterface.isRegistered(chatId);

@@ -7,7 +7,6 @@ import ru.digitalleague.prerevolutionarytinderdatabase.dtos.FavoritePersonDto;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.PersonDto;
 
 import java.util.List;
-import java.util.Optional;
 
 @FeignClient(name = "feignClientInterface", url = "${feign.global.routes.url}")
 public interface FeignClientInterface {

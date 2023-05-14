@@ -6,7 +6,7 @@ public enum BotCommandEnum {
             return "get a welcome message";
         }
     },
-    HELP{
+    HELP {
         public String getDescription() {
             return "info about commands";
         }

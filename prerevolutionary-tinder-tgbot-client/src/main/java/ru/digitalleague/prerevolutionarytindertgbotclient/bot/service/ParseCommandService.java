@@ -1,10 +1,8 @@
 package ru.digitalleague.prerevolutionarytindertgbotclient.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import ru.digitalleague.prerevolutionarytinderdatabase.dtos.FavoritePersonDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.entity.ImageMessageDto;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.BotCommandEnum;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
@@ -16,23 +14,28 @@ import java.util.List;
 @Service
 public class ParseCommandService {
 
-    @Autowired
-    private ButtonService buttonService;
+    private final ButtonService buttonService;
 
-    @Autowired
-    private DbService dbService;
+    private final DbService dbService;
 
-    @Autowired
-    private MessageService messageService;
+    private final MessageService messageService;
 
-    @Autowired
-    private PictureService pictureService;
+    private final PictureService pictureService;
 
-    @Autowired
-    private AccountService searchService;
+    private final AccountService searchService;
 
-    @Autowired
-    private FavoritesService favoritesService;
+    private final FavoritesService favoritesService;
+
+    public ParseCommandService(ButtonService buttonService, DbService dbService,
+                               MessageService messageService, PictureService pictureService,
+                               AccountService searchService, FavoritesService favoritesService) {
+        this.buttonService = buttonService;
+        this.dbService = dbService;
+        this.messageService = messageService;
+        this.pictureService = pictureService;
+        this.searchService = searchService;
+        this.favoritesService = favoritesService;
+    }
 
     public SendMessage parseCommand(String textCommand, long chatId) {
         log.info("Parse command");
@@ -56,7 +59,6 @@ public class ParseCommandService {
         return sendMessage;
     }
 
-    //Также переделать на лист.8
     public List<ImageMessageDto> parseButtonCommand(String data, long chatId) {
         log.info("Parse button command");
         SendMessage sendMessage = new SendMessage();
@@ -79,7 +81,10 @@ public class ParseCommandService {
         if (buttonCommandEnum.equals(ButtonCommandEnum.MALE) || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE)) {
             dbService.savePersonGender(chatId, buttonCommandEnum);
             sendMessage.setText(messageService.getMessage("bot.command.person.whatyourname"));
-        } else if (buttonCommandEnum.equals(ButtonCommandEnum.MALE_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE_SEARCH) || buttonCommandEnum.equals(ButtonCommandEnum.ALL_SEARCH)) {
+        } else if (buttonCommandEnum.equals(ButtonCommandEnum.MALE_SEARCH)
+                || buttonCommandEnum.equals(ButtonCommandEnum.FEMALE_SEARCH)
+                || buttonCommandEnum.equals(ButtonCommandEnum.ALL_SEARCH)) {
+
             dbService.savePersonOrientation(chatId, buttonCommandEnum);
             imageMessageDto.setSendPhoto(pictureService.getPicture(chatId));
             sendMessage = buttonService.getMenuButtons(chatId);

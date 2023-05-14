@@ -1,14 +1,12 @@
 package ru.digitalleague.prerevolutionarytindertgbotclient.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.BotCommandEnum;
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
-import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonMenuCommandEnum;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,19 +17,24 @@ import java.util.Map;
 @Service
 public class ButtonService {
 
-    @Autowired
-    private DbService dbService;
+    private final DbService dbService;
 
-    @Autowired
-    private MessageService messageService;
+    private final MessageService messageService;
 
-    public SendMessage getButtonByCommand(BotCommandEnum commandEnum, long chatId){
+    public ButtonService(DbService dbService, MessageService messageService) {
+        this.dbService = dbService;
+        this.messageService = messageService;
+    }
+
+    public SendMessage getButtonByCommand(BotCommandEnum commandEnum, long chatId) {
         switch (commandEnum) {
             case START -> {
-                if (!dbService.isRegistered(chatId)){
+                if (!dbService.isRegistered(chatId)) {
                     Map<String, String> paramMap = new HashMap<>();
-                    paramMap.put(messageService.getMessage("bot.command.person.male.description"),messageService.getMessage("bot.command.person.male.name"));
-                    paramMap.put(messageService.getMessage("bot.command.person.female.description"),messageService.getMessage("bot.command.person.female.name"));
+                    paramMap.put(messageService.getMessage("bot.command.person.male.description"),
+                            messageService.getMessage("bot.command.person.male.name"));
+                    paramMap.put(messageService.getMessage("bot.command.person.female.description"),
+                            messageService.getMessage("bot.command.person.female.name"));
 
                     SendMessage sendMessage = createKeyboardButtons(paramMap);
                     sendMessage.setText(messageService.getMessage("bot.command.person.whoareyou"));
@@ -45,13 +48,13 @@ public class ButtonService {
         return new SendMessage();
     }
 
-    private SendMessage createKeyboardButtons(Map<String, String> paramMap){
+    private SendMessage createKeyboardButtons(Map<String, String> paramMap) {
         SendMessage sendMessage = new SendMessage();
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
 
-        for (Map.Entry<String, String> entry : paramMap.entrySet()){
+        for (Map.Entry<String, String> entry : paramMap.entrySet()) {
             InlineKeyboardButton button = new InlineKeyboardButton();
             button.setText(entry.getValue());
             button.setCallbackData(entry.getKey());
@@ -70,9 +73,12 @@ public class ButtonService {
         switch (buttonCommandEnum) {
             case ABOUT -> {
                 Map<String, String> paramMap = new HashMap<>();
-                paramMap.put(messageService.getMessage("bot.command.search.male.description"),messageService.getMessage("bot.command.search.male.name"));
-                paramMap.put(messageService.getMessage("bot.command.search.female.description"),messageService.getMessage("bot.command.search.female.name"));
-                paramMap.put(messageService.getMessage("bot.command.search.all_search.description"),messageService.getMessage("bot.command.search.all_search.name"));
+                paramMap.put(messageService.getMessage("bot.command.search.male.description"),
+                        messageService.getMessage("bot.command.search.male.name"));
+                paramMap.put(messageService.getMessage("bot.command.search.female.description"),
+                        messageService.getMessage("bot.command.search.female.name"));
+                paramMap.put(messageService.getMessage("bot.command.search.all_search.description"),
+                        messageService.getMessage("bot.command.search.all_search.name"));
 
                 SendMessage sendMessage = createKeyboardButtons(paramMap);
                 sendMessage.setText(messageService.getMessage("bot.command.search.whoareyou"));
@@ -81,8 +87,10 @@ public class ButtonService {
             }
             case SEARCH -> {
                 Map<String, String> paramMap = new HashMap<>();
-                paramMap.put(messageService.getMessage("bot.command.search_menu.like.description") + id,messageService.getMessage("bot.command.search_menu.like.name"));
-                paramMap.put(messageService.getMessage("bot.command.search_menu.dislike.description") + id,messageService.getMessage("bot.command.search_menu.dislike.name"));
+                paramMap.put(messageService.getMessage("bot.command.search_menu.like.description") + id,
+                        messageService.getMessage("bot.command.search_menu.like.name"));
+                paramMap.put(messageService.getMessage("bot.command.search_menu.dislike.description") + id,
+                        messageService.getMessage("bot.command.search_menu.dislike.name"));
 
                 SendMessage sendMessage = createKeyboardButtons(paramMap);
                 sendMessage.setText(messageService.getMessage("bot.command.search_menu.reaction"));
@@ -95,9 +103,13 @@ public class ButtonService {
 
     public SendMessage getMenuButtons(long chatId) {
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put(messageService.getMessage("bot.command.menu.search.description"),messageService.getMessage("bot.command.menu.search.name"));
-        paramMap.put(messageService.getMessage("bot.command.menu.account.description"),messageService.getMessage("bot.command.menu.account.name"));
-        paramMap.put(messageService.getMessage("bot.command.menu.favorites.description"),messageService.getMessage("bot.command.menu.favorites.name"));
+        paramMap.put(messageService.getMessage("bot.command.menu.search.description"),
+                messageService.getMessage("bot.command.menu.search.name"));
+        paramMap.put(messageService.getMessage("bot.command.menu.account.description"),
+                messageService.getMessage("bot.command.menu.account.name"));
+        paramMap.put(messageService.getMessage("bot.command.menu.favorites.description"),
+                messageService.getMessage("bot.command.menu.favorites.name"));
+
         SendMessage sendMessage = createKeyboardButtons(paramMap);
         sendMessage.setText(messageService.getMessage("bot.command.menu.menu"));
         sendMessage.setChatId(chatId);

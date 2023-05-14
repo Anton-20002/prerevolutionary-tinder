@@ -1,6 +1,5 @@
 package ru.digitalleague.prerevolutionarytindertgbotclient.bot.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -9,29 +8,31 @@ import ru.digitalleague.prerevolutionarytindertgbotclient.bot.entity.ImageMessag
 import ru.digitalleague.prerevolutionarytindertgbotclient.bot.enums.ButtonCommandEnum;
 
 import java.io.File;
-import java.util.Optional;
 
 @Service
 public class AccountService {
 
-    @Autowired
-    private DbService dbService;
+    private final DbService dbService;
 
-    @Autowired
-    private ButtonService buttonService;
+    private final ButtonService buttonService;
 
-    @Autowired
-    private PictureService pictureService;
+    private final PictureService pictureService;
 
-    @Autowired
-    private MessageService messageService;
+    private final MessageService messageService;
 
+    public AccountService(DbService dbService, ButtonService buttonService,
+                          PictureService pictureService, MessageService messageService) {
+        this.dbService = dbService;
+        this.buttonService = buttonService;
+        this.pictureService = pictureService;
+        this.messageService = messageService;
+    }
 
-    public ImageMessageDto searchAccount(long chatId){
+    public ImageMessageDto searchAccount(long chatId) {
         PersonDto personDto = dbService.searchAccount(chatId);
         ImageMessageDto imageMessageDto = new ImageMessageDto();
 
-        if (personDto.getIsEmpty()){
+        if (personDto.getIsEmpty()) {
             SendMessage sendMessage = buttonService.getMenuButtons(chatId);
             sendMessage.setChatId(chatId);
             sendMessage.setText(messageService.getMessage("bot.command.search.emptylist"));
@@ -45,8 +46,4 @@ public class AccountService {
         }
         return imageMessageDto;
     }
-
-
-
-
 }

@@ -1,7 +1,6 @@
 package ru.digitalleague.prerevolutionarytindertgbotclient.bot;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -24,21 +23,24 @@ import java.util.List;
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
-    @Autowired
-    private BotConfiguration botConfig;
+    private final BotConfiguration botConfig;
 
-    @Autowired
-    private BotCommandService botCommandService;
+    private final BotCommandService botCommandService;
 
-    @Autowired
-    private ParseCommandService parseCommandService;
+    private final ParseCommandService parseCommandService;
 
-    @Autowired
-    private MessageService messageService;
+    private final MessageService messageService;
+
+    public TelegramBot(BotConfiguration botConfig, BotCommandService botCommandService,
+                       ParseCommandService parseCommandService, MessageService messageService) {
+        this.botConfig = botConfig;
+        this.botCommandService = botCommandService;
+        this.parseCommandService = parseCommandService;
+        this.messageService = messageService;
+    }
 
     public void initBotCommands() {
         try {
-            //TODO
             List<BotCommand> botCommands = botCommandService.getBotCommands();
             execute(new SetMyCommands(botCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
@@ -71,7 +73,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
         assert imageMessageDtoList != null;
 
-        for (ImageMessageDto dto : imageMessageDtoList){
+        for (ImageMessageDto dto : imageMessageDtoList) {
             sendMessage(dto.getSendMessage(), dto.getSendPhoto());
         }
     }
@@ -92,7 +94,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    //переделать на листо ДТОХ
     private List<ImageMessageDto> directionMessage(Update update, SendMessage sendMessage, SendPhoto sendPhoto) {
         ImageMessageDto imageMessageDto = new ImageMessageDto();
         List<ImageMessageDto> imageMessageDtoList = new ArrayList<>();

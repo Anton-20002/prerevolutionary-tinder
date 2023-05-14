@@ -1,7 +1,6 @@
 package ru.digitalleague.prerevolutionarytindertgbotclient.bot.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +9,13 @@ import java.util.Locale;
 @Service
 @Slf4j
 public class MessageService {
-    private final Locale russian = new Locale("ru", "RU"); //глянуть саму локаль как передавать
+    private final Locale russian = new Locale("ru", "RU");
 
+    private final ResourceBundleMessageSource messageSource;
 
-    @Autowired
-    private ResourceBundleMessageSource messageSource;
+    public MessageService(ResourceBundleMessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     public String getMessage(String code) {
         try {

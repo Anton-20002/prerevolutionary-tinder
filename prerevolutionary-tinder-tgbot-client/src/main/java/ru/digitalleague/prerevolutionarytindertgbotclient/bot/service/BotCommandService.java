@@ -12,11 +12,11 @@ import java.util.List;
 @Service
 public class BotCommandService {
 
-    public List<BotCommand> getBotCommands(){
+    public List<BotCommand> getBotCommands() {
         log.info("Build dot commands");
         List<BotCommand> botCommands = new ArrayList<>();
 
-        for (BotCommandEnum commandEnum : BotCommandEnum.values()){
+        for (BotCommandEnum commandEnum : BotCommandEnum.values()) {
             String command = "/" + commandEnum.name().toLowerCase();
             botCommands.add(new BotCommand(command, commandEnum.getDescription()));
         }

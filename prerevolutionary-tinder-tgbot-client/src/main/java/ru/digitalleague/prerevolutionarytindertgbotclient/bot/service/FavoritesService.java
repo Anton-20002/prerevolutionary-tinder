@@ -1,6 +1,5 @@
 package ru.digitalleague.prerevolutionarytindertgbotclient.bot.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import ru.digitalleague.prerevolutionarytinderdatabase.dtos.FavoritePersonDto;
@@ -13,16 +12,18 @@ import java.util.List;
 @Service
 public class FavoritesService {
 
-    @Autowired
-    private DbService dbService;
+    private final DbService dbService;
 
-    @Autowired
-    private PictureService pictureService;
+    private final PictureService pictureService;
 
-    @Autowired
-    private MessageService messageService;
+    private final MessageService messageService;
 
-    //проверить на пустой лист
+    public FavoritesService(DbService dbService, PictureService pictureService, MessageService messageService) {
+        this.dbService = dbService;
+        this.pictureService = pictureService;
+        this.messageService = messageService;
+    }
+
     public List<ImageMessageDto> getFavorites(long chatId){
         List<FavoritePersonDto> favoritesList = dbService.getFavoritesByChatId(chatId);
         List<ImageMessageDto> imageMessageDtoList = new ArrayList<>();
