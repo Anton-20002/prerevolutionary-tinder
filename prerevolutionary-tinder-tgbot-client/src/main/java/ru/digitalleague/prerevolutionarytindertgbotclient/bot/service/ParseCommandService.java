@@ -58,6 +58,13 @@ public class ParseCommandService {
         return sendMessage;
     }
 
+    /**
+    Нужно использовать спринг бины вместо енамов
+       
+    MyBeanCommand command = factory.getBean(data)
+    command.execute();
+    
+    */
     public List<ImageMessageDto> parseButtonCommand(String data, long chatId) {
         log.info("Parse button command");
         SendMessage sendMessage = new SendMessage();
