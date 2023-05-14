@@ -51,6 +51,11 @@ public class PictureService {
         try {
             image = ImageIO.read(inputStream);
         } catch (IOException e) {
+            /**
+            Лучше сделать кастомное исключение чтобы можно было отлавливать
+            
+            
+            */
             throw new RuntimeException(e);
         }
 
